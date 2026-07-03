@@ -1,0 +1,22 @@
+export const REQUIRED_COLUMNS = [
+  "order_id",
+  "customer_id",
+  "order_date",
+  "order_time",
+  "city",
+  "category",
+  "order_value",
+  "quantity",
+  "payment_mode",
+  "delivery_time_minutes",
+  "promised_delivery_time",
+  "order_status",
+  "customer_rating",
+  "pincode",
+  "dark_store_id",
+  "delivery_partner_id",
+  "rider_shift_minutes",
+  "rider_active_minutes",
+  "discount_applied",
+  "delivery_charge"
+];

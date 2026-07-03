@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Quick Commerce Analyst Executive Business Report</title>
+  <style>
+    /* Google Fonts import */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+    /* CSS variables for consistent corporate color palette */
+    :root {
+      --primary: #4f46e5;
+      --primary-dark: #3730a3;
+      --neutral-dark: #0f172a;
+      --neutral-light: #f8fafc;
+      --border-color: #cbd5e1;
+      --accent-green: #10b981;
+      --accent-rose: #f43f5e;
+      --accent-blue: #0ea5e9;
+      --accent-purple: #8b5cf6;
+      --text-muted: #64748b;
+    }
+
+    /* Print settings & page constraints */
+    @page {
+      size: A4;
+      margin: 25mm 20mm 20mm 20mm;
+      
+      @top-left {
+        content: "Quick Commerce Analyst \A0\A0|\A0\A0 Executive Brief";
+        font-family: 'Inter', sans-serif;
+        font-size: 8pt;
+        color: #64748b;
+        font-weight: 500;
+        border-bottom: 1px solid #e2e8f0;
+        padding-bottom: 5px;
+        width: 100%;
+      }
+      
+      @top-right {
+        content: "CONFIDENTIAL";
+        font-family: 'Inter', sans-serif;
+        font-size: 8pt;
+        color: #f43f5e;
+        font-weight: 700;
+        letter-spacing: 1px;
+        border-bottom: 1px solid #e2e8f0;
+        padding-bottom: 5px;
+      }
+
+      @bottom-left {
+        content: "Generated automatically by the Quick Commerce Analyst AI Platform.";
+        font-family: 'Inter', sans-serif;
+        font-size: 7pt;
+        color: #94a3b8;
+      }
+
+      @bottom-right {
+        content: "Page " counter(page);
+        font-family: 'Inter', sans-serif;
+        font-size: 8pt;
+        color: #64748b;
+        font-weight: 500;
+      }
+    }
+
+    /* Page-specific page margin box overrides */
+    @page :first {
+      margin-top: 0mm;
+      @top-left { content: none; border-bottom: none; }
+      @top-right { content: none; border-bottom: none; }
+      @bottom-left { content: none; }
+      @bottom-right { content: none; }
+    }
+
+    /* General Typography */
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--neutral-dark);
+      line-height: 1.5;
+      font-size: 10pt;
+      background-color: white;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1, h2, h3, h4 {
+      font-weight: 800;
+      color: var(--neutral-dark);
+      margin-top: 0;
+      page-break-after: avoid;
+    }
+
+    h2 {
+      font-size: 16pt;
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 5px;
+      margin-bottom: 15px;
+      color: var(--primary-dark);
+    }
+
+    p {
+      margin-top: 0;
+      margin-bottom: 12px;
+      font-weight: 400;
+    }
+
+    .page-break {
+      page-break-before: always;
+    }
+
+    /* Cover Page */
+    .cover-container {
+      height: 100%;
+      min-height: 250mm;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-sizing: border-box;
+      padding: 40mm 10mm 20mm 10mm;
+      position: relative;
+    }
+
+    .cover-header {
+      text-align: left;
+    }
+
+    .logo-placeholder {
+      display: inline-block;
+      border: 2px dashed var(--border-color);
+      color: var(--text-muted);
+      padding: 10px 20px;
+      font-size: 9pt;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 25mm;
+      border-radius: 4px;
+    }
+
+    .cover-title {
+      font-size: 28pt;
+      font-weight: 900;
+      line-height: 1.15;
+      color: var(--neutral-dark);
+      margin-bottom: 5px;
+      letter-spacing: -1px;
+    }
+
+    .cover-subtitle {
+      font-size: 13pt;
+      font-weight: 400;
+      color: var(--text-muted);
+      margin-bottom: 12mm;
+      line-height: 1.4;
+    }
+
+    .cover-bar {
+      width: 60mm;
+      height: 4px;
+      background: linear-gradient(to right, var(--primary), var(--accent-purple));
+      margin-bottom: 10mm;
+      border-radius: 2px;
+    }
+
+    .cover-metadata {
+      margin-top: auto;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 8px;
+    }
+
+    .meta-row {
+      margin-bottom: 6px;
+      font-size: 9.5pt;
+    }
+
+    .meta-label {
+      font-weight: 700;
+      color: var(--neutral-dark);
+      display: inline-block;
+      width: 35mm;
+    }
+
+    .meta-value {
+      color: var(--text-muted);
+    }
+
+    /* Table of Contents */
+    .toc-title {
+      font-size: 20pt;
+      margin-bottom: 10mm;
+    }
+
+    .toc-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .toc-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 5mm;
+      font-size: 11pt;
+    }
+
+    .toc-name {
+      font-weight: 600;
+      background-color: white;
+      padding-right: 5px;
+    }
+
+    .toc-dots {
+      flex-grow: 1;
+      border-bottom: 2px dotted #cbd5e1;
+      margin: 0 5px 3px 5px;
+    }
+
+    .toc-page {
+      font-weight: 700;
+      color: var(--primary);
+      background-color: white;
+      padding-left: 5px;
+    }
+
+    /* KPI Summary Cards Grid */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .kpi-card {
+      background-color: var(--neutral-light);
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 12px;
+      box-sizing: border-box;
+    }
+
+    .kpi-card-title {
+      font-size: 7.5pt;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .kpi-card-value {
+      font-size: 15pt;
+      font-weight: 800;
+      color: var(--neutral-dark);
+    }
+
+    .kpi-card-desc {
+      font-size: 7pt;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Health Score Callout Card */
+    .health-score-container {
+      display: flex;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 25px;
+      align-items: center;
+      background-color: white;
+    }
+
+    .health-score-badge {
+      width: 32mm;
+      height: 32mm;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      text-align: center;
+      font-weight: 800;
+      margin-right: 15px;
+      flex-shrink: 0;
+    }
+
+    .health-score-num {
+      font-size: 26pt;
+      line-height: 1;
+    }
+
+    .health-score-label {
+      font-size: 8pt;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 4px;
+    }
+
+    .health-score-info h3 {
+      font-size: 12pt;
+      margin-bottom: 5px;
+    }
+
+    .health-score-info p {
+      font-size: 9pt;
+      color: var(--text-muted);
+      margin-bottom: 0;
+      line-height: 1.4;
+    }
+
+    /* Colored badge classes for score categories */
+    .badge-excellent { background-color: var(--accent-green); }
+    .badge-healthy { background-color: var(--accent-blue); }
+    .badge-warning { background-color: var(--accent-purple); }
+    .badge-critical { background-color: var(--accent-rose); }
+
+    /* Tables */
+    .kpi-section {
+      margin-bottom: 20px;
+      page-break-inside: avoid;
+    }
+
+    .kpi-section h3 {
+      font-size: 11pt;
+      color: var(--primary);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 10px;
+      font-size: 9pt;
+      page-break-inside: auto;
+    }
+
+    tr {
+      page-break-inside: avoid;
+      page-break-after: auto;
+    }
+
+    thead {
+      display: table-header-group;
+    }
+
+    th {
+      background-color: var(--neutral-dark);
+      color: white;
+      font-weight: 700;
+      text-align: left;
+      padding: 6px 10px;
+      border: 1px solid var(--neutral-dark);
+    }
+
+    td {
+      padding: 6px 10px;
+      border: 1px solid #e2e8f0;
+    }
+
+    tr:nth-child(even) td {
+      background-color: var(--neutral-light);
+    }
+
+    /* Insights Callout Boxes */
+    .insight-card {
+      border-left: 4px solid;
+      padding: 12px 15px;
+      margin-bottom: 15px;
+      border-radius: 0 8px 8px 0;
+      background-color: var(--neutral-light);
+      page-break-inside: avoid;
+    }
+
+    .insight-card h3 {
+      font-size: 11pt;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      font-weight: 700;
+    }
+
+    .insight-card ul {
+      margin: 0;
+      padding-left: 15px;
+      font-size: 9pt;
+    }
+
+    .insight-card li {
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+
+    .insight-strengths { border-left-color: var(--accent-green); }
+    .insight-strengths h3 { color: var(--accent-green); }
+
+    .insight-bottlenecks { border-left-color: var(--accent-rose); }
+    .insight-bottlenecks h3 { color: var(--accent-rose); }
+
+    .insight-opportunities { border-left-color: var(--accent-blue); }
+    .insight-opportunities h3 { color: var(--accent-blue); }
+
+    .insight-recommendations { border-left-color: var(--accent-purple); }
+    .insight-recommendations h3 { color: var(--accent-purple); }
+
+    /* Executive Conclusion */
+    .conclusion-container {
+      background-color: #f5f3ff;
+      border: 1px solid #ddd6fe;
+      border-radius: 12px;
+      padding: 18px;
+      margin-top: 15px;
+      page-break-inside: avoid;
+    }
+
+    .conclusion-container h3 {
+      font-size: 13pt;
+      color: var(--primary-dark);
+      margin-bottom: 8px;
+    }
+
+    .conclusion-text {
+      font-size: 9pt;
+      line-height: 1.5;
+      color: #374151;
+      margin-bottom: 12px;
+    }
+
+    .conclusion-steps {
+      margin: 0;
+      padding-left: 15px;
+      font-size: 9pt;
+    }
+
+    .conclusion-steps li {
+      margin-bottom: 6px;
+      line-height: 1.4;
+      font-weight: 500;
+      color: #4b5563;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cover Page -->
+  <div class="cover-container">
+    <div class="cover-header">
+      <div class="logo-placeholder">Company Logo</div>
+      <h1 class="cover-title">Quick Commerce Analyst</h1>
+      <h1 class="cover-title" style="color: var(--primary); margin-top:-5px;">Executive Business Report</h1>
+      <div class="cover-bar"></div>
+      <p class="cover-subtitle">AI-powered operational, financial, and hyperlocal business analytics report.</p>
+    </div>
+
+    <div class="cover-metadata">
+      <div class="meta-row">
+        <span class="meta-label">Client Name:</span>
+        <span class="meta-value">{{ client_name }}</span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-label">Prepared By:</span>
+        <span class="meta-value">Quick Commerce Analyst AI Platform</span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-label">Generation Date:</span>
+        <span class="meta-value">{{ date_str }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table of Contents Page -->
+  <div class="page-break" style="padding-top: 10mm;">
+    <h2 class="toc-title">Table of Contents</h2>
+    <ul class="toc-list" style="margin-top: 15mm;">
+      <li class="toc-item">
+        <span class="toc-name">1. Executive Summary & Health Diagnostics</span>
+        <span class="toc-dots"></span>
+        <span class="toc-page">3</span>
+      </li>
+      <li class="toc-item">
+        <span class="toc-name">2. Operational Metrics & Ingestion Tables</span>
+        <span class="toc-dots"></span>
+        <span class="toc-page">4</span>
+      </li>
+      <li class="toc-item">
+        <span class="toc-name">3. AI-Powered Insights (Strengths & Risks)</span>
+        <span class="toc-dots"></span>
+        <span class="toc-page">5</span>
+      </li>
+      <li class="toc-item">
+        <span class="toc-name">4. Strategic Recommendations & Executive Conclusion</span>
+        <span class="toc-dots"></span>
+        <span class="toc-page">6</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Page 3: Executive Summary & Health Score -->
+  <div class="page-break" style="padding-top: 5mm;">
+    <h2>1. Executive Summary & Diagnostics</h2>
+    
+    <!-- Health Score Callout Card -->
+    <div class="health-score-container">
+      <div class="health-score-badge {% if health_score >= 90 %}badge-excellent{% elif health_score >= 75 %}badge-healthy{% elif health_score >= 60 %}badge-warning{% else %}badge-critical{% endif %}">
+        <span class="health-score-num">{{ health_score }}</span>
+        <span class="health-score-label">{{ health_class }}</span>
+      </div>
+      <div class="health-score-info">
+        <h3>Business Health Diagnostics</h3>
+        <p>{{ health_explanation }}</p>
+      </div>
+    </div>
+
+    <p style="font-size: 9.5pt; color: var(--text-muted); margin-bottom: 20px;">
+      Below is the primary operational metric overview calculated directly from the transaction dataset:
+    </p>
+
+    <!-- KPI Summary Grid -->
+    <div class="kpi-grid">
+      <div class="kpi-card" style="border-top: 3px solid var(--primary);">
+        <div class="kpi-card-title">Total Revenue</div>
+        <div class="kpi-card-value">₹{{ kpis.revenue_kpis.total_revenue|round(2) }}</div>
+        <div class="kpi-card-desc">Gross platform value</div>
+      </div>
+      <div class="kpi-card" style="border-top: 3px solid var(--accent-purple);">
+        <div class="kpi-card-title">Total Orders</div>
+        <div class="kpi-card-value">{{ kpis.order_kpis.total_orders }}</div>
+        <div class="kpi-card-desc">Valid processed count</div>
+      </div>
+      <div class="kpi-card" style="border-top: 3px solid var(--accent-blue);">
+        <div class="kpi-card-title">Total Customers</div>
+        <div class="kpi-card-value">{{ kpis.customer_kpis.total_customers }}</div>
+        <div class="kpi-card-desc">Unique consumer IDs</div>
+      </div>
+      <div class="kpi-card" style="border-top: 3px solid var(--accent-green);">
+        <div class="kpi-card-title">Avg Profit Margin</div>
+        <div class="kpi-card-value">₹{{ kpis.unit_economics_kpis.avg_profit_margin_per_order|round(2) }}</div>
+        <div class="kpi-card-desc">Per-order estimated profit</div>
+      </div>
+      <div class="kpi-card" style="border-top: 3px solid var(--accent-rose);">
+        <div class="kpi-card-title">Cancellation Rate</div>
+        <div class="kpi-card-value">{{ kpis.order_kpis.cancellation_rate|round(2) }}%</div>
+        <div class="kpi-card-desc">Cancelled status pct</div>
+      </div>
+      <div class="kpi-card" style="border-top: 3px solid #6b7280;">
+        <div class="kpi-card-title">Avg Delivery Time</div>
+        <div class="kpi-card-value">{{ kpis.delivery_kpis.avg_delivery_time|round(2) }}m</div>
+        <div class="kpi-card-desc">Mean actual transit time</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page 4: Operational Metrics Tables -->
+  <div class="page-break" style="padding-top: 5mm;">
+    <h2>2. Operational Metrics & Ingestion Tables</h2>
+    
+    <!-- Customer & Order Section -->
+    <div class="kpi-section">
+      <h3>Customer & Ingestion Inherent Statistics</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>KPI Indicator</th>
+            <th>Value</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Repeat Customer Rate</td>
+            <td>{{ kpis.customer_kpis.repeat_customer_rate|round(2) }}%</td>
+            <td>Percentage of customers with multiple orders</td>
+          </tr>
+          <tr>
+            <td>Average Orders per Customer</td>
+            <td>{{ kpis.customer_kpis.avg_orders_per_customer|round(2) }}</td>
+            <td>Mean transaction count per user</td>
+          </tr>
+          <tr>
+            <td>Average Order Value</td>
+            <td>₹{{ kpis.order_kpis.avg_order_value|round(2) }}</td>
+            <td>Mean billing value per checkout</td>
+          </tr>
+          <tr>
+            <td>Return Rate</td>
+            <td>{{ kpis.order_kpis.return_rate|round(2) }}%</td>
+            <td>Percentage of orders returned by buyer</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Unit Economics & Logistics Section -->
+    <div class="kpi-section">
+      <h3>Unit Economics & Logistics Performance</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>KPI Indicator</th>
+            <th>Value</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Fulfillment Profitability Margin</td>
+            <td>₹{{ kpis.unit_economics_kpis.avg_profit_margin_per_order|round(2) }}</td>
+            <td>Average net profit calculated per delivery</td>
+          </tr>
+          <tr>
+            <td>Low Margin Orders Percentage</td>
+            <td>{{ kpis.unit_economics_kpis.low_margin_order_pct|round(2) }}%</td>
+            <td>Orders yielding negative margins</td>
+          </tr>
+          <tr>
+            <td>Total Net Estimated Profit</td>
+            <td>₹{{ kpis.unit_economics_kpis.total_estimated_profit|round(2) }}</td>
+            <td>Gross platform estimated earnings</td>
+          </tr>
+          <tr>
+            <td>Fulfillment Cost ratio</td>
+            <td>{{ kpis.unit_economics_kpis.delivery_cost_as_pct_of_order_value|round(2) }}%</td>
+            <td>Operating delivery costs as ratio of sales</td>
+          </tr>
+          <tr>
+            <td>Logistics SLA Compliance</td>
+            <td>{{ kpis.delivery_kpis.on_time_delivery_rate|round(2) }}%</td>
+            <td>Deliveries matching promised arrival SLA</td>
+          </tr>
+          <tr>
+            <td>Average Rider Utilization</td>
+            <td>{{ kpis.rider_kpis.avg_rider_utilization_pct|round(2) }}%</td>
+            <td>Rider active duration relative to shift time</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Page 5: AI Insights -->
+  <div class="page-break" style="padding-top: 5mm;">
+    <h2>3. AI-Powered Insights</h2>
+    <p style="font-size: 9.5pt; color: var(--text-muted); margin-bottom: 20px;">
+      Direct tactical insights compiled by the Quick Commerce Analyst AI engine:
+    </p>
+
+    <!-- Strengths -->
+    <div class="insight-card insight-strengths">
+      <h3>Key Strengths</h3>
+      <ul>
+        {% for strength in insights.strengths %}
+          <li>{{ strength }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- Bottlenecks -->
+    <div class="insight-card insight-bottlenecks">
+      <h3>Bottlenecks & Risks</h3>
+      <ul>
+        {% for bottleneck in insights.bottlenecks %}
+          <li>{{ bottleneck }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- Opportunities -->
+    <div class="insight-card insight-opportunities">
+      <h3>Opportunities</h3>
+      <ul>
+        {% for opp in insights.opportunities %}
+          <li>{{ opp }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <!-- Page 6: Recommendations & Executive Conclusion -->
+  <div class="page-break" style="padding-top: 5mm;">
+    <h2>4. Action Items & Executive Conclusion</h2>
+
+    <!-- Recommendations -->
+    <div class="insight-card insight-recommendations" style="margin-bottom: 25px;">
+      <h3>Strategic Next Steps</h3>
+      <ul style="list-style-type: none; padding-left: 0;">
+        {% for rec in insights.recommendations %}
+          <li style="margin-bottom: 8px; line-height: 1.45;">
+            <strong style="color: var(--accent-purple);">{{ loop.index }}.</strong> 
+            {{ rec|replace(loop.index|string + ". ", "")|replace(loop.index|string + ".", "") }}
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- Executive Conclusion -->
+    <div class="conclusion-container">
+      <h3>Executive Conclusion</h3>
+      <div class="conclusion-text">
+        {{ conclusion_text }}
+      </div>
+      <ul class="conclusion-steps">
+        {% for step in conclusion_steps %}
+          <li>{{ step }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+</body>
+</html>
