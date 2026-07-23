@@ -3,6 +3,35 @@ import numpy as np
 import pandas as pd
 from typing import Tuple, Dict, Any, List
 
+def robust_to_datetime(series: pd.Series, formats: List[str] = None) -> pd.Series:
+    """
+    Robustly parses a series of string dates into pandas datetime objects using
+    an explicit list of formats in order of priority.
+    """
+    if formats is None:
+        formats = ['%d-%m-%Y', '%d/%m/%Y', '%Y-%m-%d', '%Y/%m/%d']
+        
+    result = pd.Series(pd.NaT, index=series.index, dtype='datetime64[ns]')
+    remaining = series.copy()
+    parsed_mask = pd.Series(False, index=series.index)
+    
+    for fmt in formats:
+        unparsed_mask = (~parsed_mask) & remaining.notna()
+        if not unparsed_mask.any():
+            break
+            
+        try:
+            parsed_subset = pd.to_datetime(remaining[unparsed_mask], format=fmt, errors='coerce')
+            success_mask = parsed_subset.notna()
+            
+            success_indices = success_mask[success_mask].index
+            result.loc[success_indices] = parsed_subset.loc[success_indices]
+            parsed_mask.loc[success_indices] = True
+        except Exception:
+            continue
+            
+    return result
+
 def clean_dataset(df: pd.DataFrame) -> Tuple[pd.DataFrame, Dict[str, Any]]:
     """
     Performs standard preprocessing and data cleaning tasks on the quick commerce dataset.
@@ -63,18 +92,33 @@ def clean_dataset(df: pd.DataFrame) -> Tuple[pd.DataFrame, Dict[str, Any]]:
     failed_dates: List[Dict[str, Any]] = []
     if 'order_date' in cleaned_df.columns:
         original_dates = cleaned_df['order_date']
-        # Convert to datetime series
-        converted_dates = pd.to_datetime(original_dates, errors='coerce')
+        # Call robust date parser
+        attempted_formats = ['%d-%m-%Y', '%d/%m/%Y', '%Y-%m-%d', '%Y/%m/%d']
+        converted_dates = robust_to_datetime(original_dates, attempted_formats)
         
         # Identify rows that were not null originally, but are null after conversion (failed)
         failed_mask = original_dates.notna() & converted_dates.isna()
         failed_indices = cleaned_df[failed_mask].index.tolist()
         
-        for idx in failed_indices:
-            failed_dates.append({
-                "row_index": idx,
-                "original_value": str(cleaned_df.loc[idx, 'order_date'])
-            })
+        if failed_indices:
+            print(f"\n[DATE PARSING FAILURE REPORT] Total invalid dates: {len(failed_indices)}")
+            for idx in failed_indices:
+                order_id = cleaned_df.loc[idx, 'order_id'] if 'order_id' in cleaned_df.columns else "Unknown"
+                orig_val = original_dates.loc[idx]
+                failure_reason = f"Value '{orig_val}' did not match any of the attempted formats."
+                print(f"  - Row Index: {idx}")
+                print(f"    Order ID: {order_id}")
+                print(f"    Original order_date: {orig_val}")
+                print(f"    Attempted formats: {', '.join(attempted_formats)}")
+                print(f"    Failure reason: {failure_reason}")
+                
+                failed_dates.append({
+                    "row_index": idx,
+                    "order_id": order_id,
+                    "original_value": str(orig_val),
+                    "attempted_formats": attempted_formats,
+                    "failure_reason": failure_reason
+                })
         cleaned_df['order_date'] = converted_dates
 
     failed_times: List[Dict[str, Any]] = []

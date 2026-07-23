@@ -1,4 +1,20 @@
 import os
+from pathlib import Path
+from dotenv import load_dotenv
+
+# Define the absolute path to backend/.env
+BASE_DIR = Path(__file__).resolve().parents[1]
+env_path = BASE_DIR / ".env"
+
+if env_path.exists():
+    load_dotenv(env_path)
+else:
+    load_dotenv()
+
+# Verify that GEMINI_API_KEY is configured
+if not os.getenv("GEMINI_API_KEY"):
+    raise RuntimeError("Critical startup error: GEMINI_API_KEY is missing or empty in environment after loading .env.")
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routes.upload import router as upload_router
@@ -17,13 +33,22 @@ app = FastAPI(
 
 # Set up origins allowed to connect to API
 cors_origins_env = os.getenv("CORS_ORIGINS", "")
+origins = []
 if cors_origins_env:
     origins = [origin.strip() for origin in cors_origins_env.split(",") if origin.strip()]
-else:
-    origins = [
-        "http://localhost:5173",
-        "http://127.0.0.1:5173",
-    ]
+
+# Include development origins
+dev_origins = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "http://localhost:5174",
+    "http://127.0.0.1:5174",
+    "http://localhost:5175",
+    "http://127.0.0.1:5175",
+]
+for origin in dev_origins:
+    if origin not in origins:
+        origins.append(origin)
 
 
 app.add_middleware(

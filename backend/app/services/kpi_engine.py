@@ -35,7 +35,7 @@ def calculate_kpis(df: pd.DataFrame) -> Dict[str, Any]:
         return {
             "customer_kpis": {"total_customers": 0, "repeat_customer_rate": 0.0, "avg_orders_per_customer": 0.0},
             "order_kpis": {"total_orders": 0, "avg_order_value": 0.0, "cancellation_rate": 0.0, "return_rate": 0.0},
-            "revenue_kpis": {"total_revenue": 0.0, "revenue_by_category": {}, "revenue_by_city": {}},
+            "revenue_kpis": {"total_revenue": 0.0, "revenue_by_category": {}, "revenue_by_city": {}, "revenue_by_time_slot": {}, "revenue_by_day_of_week": {}},
             "delivery_kpis": {"avg_delivery_time": 0.0, "on_time_delivery_rate": 0.0, "delayed_order_rate": 0.0},
             "unit_economics_kpis": {"avg_profit_margin_per_order": 0.0, "low_margin_order_pct": 0.0, "total_estimated_profit": 0.0, "delivery_cost_as_pct_of_order_value": 0.0},
             "hyperlocal_kpis": {"orders_by_pincode": {}, "orders_per_dark_store": {}, "underserved_pincodes": []},
@@ -84,11 +84,15 @@ def calculate_kpis(df: pd.DataFrame) -> Dict[str, Any]:
     total_revenue = float(df['order_value'].sum()) if 'order_value' in df.columns else 0.0
     revenue_by_category = df.groupby('category')['order_value'].sum().to_dict() if 'category' in df.columns and 'order_value' in df.columns else {}
     revenue_by_city = df.groupby('city')['order_value'].sum().to_dict() if 'city' in df.columns and 'order_value' in df.columns else {}
+    revenue_by_time_slot = df.groupby('time_slot')['order_value'].sum().to_dict() if 'time_slot' in df.columns and 'order_value' in df.columns else {}
+    revenue_by_day_of_week = df.groupby('order_day_of_week')['order_value'].sum().to_dict() if 'order_day_of_week' in df.columns and 'order_value' in df.columns else {}
     
     revenue_kpis = {
         "total_revenue": total_revenue,
         "revenue_by_category": revenue_by_category,
-        "revenue_by_city": revenue_by_city
+        "revenue_by_city": revenue_by_city,
+        "revenue_by_time_slot": revenue_by_time_slot,
+        "revenue_by_day_of_week": revenue_by_day_of_week
     }
 
     # 4. Delivery KPIs

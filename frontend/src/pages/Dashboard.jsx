@@ -17,6 +17,7 @@ import {
   CartesianGrid,
   Tooltip
 } from 'recharts';
+import { CustomBarChart } from '../components/CustomBarChart';
 import {
   Sun,
   Moon,
@@ -153,6 +154,18 @@ const Dashboard = () => {
     name: key,
     revenue: val
   }));
+
+  const slotOrder = ["Morning", "Afternoon", "Evening", "Night"];
+  const timeSlotData = Object.entries(kpis?.revenue_kpis?.revenue_by_time_slot || {}).map(([key, val]) => ({
+    name: key,
+    revenue: val
+  })).sort((a, b) => slotOrder.indexOf(a.name) - slotOrder.indexOf(b.name));
+
+  const dayOrder = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+  const dayOfWeekData = Object.entries(kpis?.revenue_kpis?.revenue_by_day_of_week || {}).map(([key, val]) => ({
+    name: key,
+    revenue: val
+  })).sort((a, b) => dayOrder.indexOf(a.name) - dayOrder.indexOf(b.name));
 
   const ratingData = Object.entries(kpis?.satisfaction_kpis?.rating_trend_by_month || {}).map(([key, val]) => ({
     name: monthNames[parseInt(key)] || `Month ${key}`,
@@ -417,32 +430,66 @@ const Dashboard = () => {
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#12131a]/40 p-5 backdrop-blur-sm shadow-sm">
             <h4 className="text-sm font-bold tracking-wide mb-4 text-slate-700 dark:text-slate-300">Revenue by Category</h4>
-            <div className="w-full h-[260px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={categoryData} margin={{ top: 10, right: 10, left: -10, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
-                  <XAxis dataKey="name" stroke={axisColor} fontSize={10} tickLine={false} />
-                  <YAxis stroke={axisColor} fontSize={10} tickLine={false} />
-                  <Tooltip contentStyle={{ backgroundColor: tooltipBg, borderColor: tooltipBorder, color: tooltipText }} />
-                  <Bar dataKey="revenue" fill="#6366f1" radius={[4, 4, 0, 0]} name="Revenue (₹)" />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
+            <CustomBarChart
+              data={categoryData}
+              dataKey="name"
+              barKey="revenue"
+              barColor="#6366f1"
+              axisColor={axisColor}
+              gridColor={gridColor}
+              tooltipBg={tooltipBg}
+              tooltipBorder={tooltipBorder}
+              tooltipText={tooltipText}
+              labelName="Revenue (₹)"
+            />
           </div>
 
           <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#12131a]/40 p-5 backdrop-blur-sm shadow-sm">
             <h4 className="text-sm font-bold tracking-wide mb-4 text-slate-700 dark:text-slate-300">Revenue by City</h4>
-            <div className="w-full h-[260px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={cityData} margin={{ top: 10, right: 10, left: -10, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
-                  <XAxis dataKey="name" stroke={axisColor} fontSize={10} tickLine={false} />
-                  <YAxis stroke={axisColor} fontSize={10} tickLine={false} />
-                  <Tooltip contentStyle={{ backgroundColor: tooltipBg, borderColor: tooltipBorder, color: tooltipText }} />
-                  <Bar dataKey="revenue" fill="#a855f7" radius={[4, 4, 0, 0]} name="Revenue (₹)" />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
+            <CustomBarChart
+              data={cityData}
+              dataKey="name"
+              barKey="revenue"
+              barColor="#a855f7"
+              axisColor={axisColor}
+              gridColor={gridColor}
+              tooltipBg={tooltipBg}
+              tooltipBorder={tooltipBorder}
+              tooltipText={tooltipText}
+              labelName="Revenue (₹)"
+            />
+          </div>
+
+          <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#12131a]/40 p-5 backdrop-blur-sm shadow-sm">
+            <h4 className="text-sm font-bold tracking-wide mb-4 text-slate-700 dark:text-slate-300">Revenue by Time Slot</h4>
+            <CustomBarChart
+              data={timeSlotData}
+              dataKey="name"
+              barKey="revenue"
+              barColor="#06b6d4"
+              axisColor={axisColor}
+              gridColor={gridColor}
+              tooltipBg={tooltipBg}
+              tooltipBorder={tooltipBorder}
+              tooltipText={tooltipText}
+              labelName="Revenue (₹)"
+            />
+          </div>
+
+          <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#12131a]/40 p-5 backdrop-blur-sm shadow-sm">
+            <h4 className="text-sm font-bold tracking-wide mb-4 text-slate-700 dark:text-slate-300">Revenue by Day of Week</h4>
+            <CustomBarChart
+              data={dayOfWeekData}
+              dataKey="name"
+              barKey="revenue"
+              barColor="#10b981"
+              axisColor={axisColor}
+              gridColor={gridColor}
+              tooltipBg={tooltipBg}
+              tooltipBorder={tooltipBorder}
+              tooltipText={tooltipText}
+              labelName="Revenue (₹)"
+            />
           </div>
 
           <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#12131a]/40 p-5 backdrop-blur-sm shadow-sm">

@@ -2,12 +2,8 @@ import os
 import json
 from google import genai
 from google.genai import types
-from dotenv import load_dotenv
 from typing import Dict, Any
 from pydantic import BaseModel, Field
-
-# Load environment variables from .env
-load_dotenv()
 
 # Simple in-memory cache to store insights for each session
 insights_cache: Dict[str, dict] = {}
@@ -18,16 +14,25 @@ class InsightsSchema(BaseModel):
     opportunities: list[str] = Field(description="A list mapping potential growth areas or adjustments (e.g. optimizing underserved pincodes, rider shift adjustments).")
     recommendations: list[str] = Field(description="A list presenting specific, numbered actionable items to improve profitability and delivery times.")
 
+# Shared singleton Gemini client
+_gemini_client = None
+
 def get_gemini_client() -> genai.Client:
     """
-    Safely initializes and returns the Gemini client if the GEMINI_API_KEY is configured.
+    Safely initializes and returns the shared Gemini client if the GEMINI_API_KEY is configured.
     """
+    global _gemini_client
+    if _gemini_client is not None:
+        return _gemini_client
+        
     api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
         return None
     try:
-        return genai.Client(api_key=api_key)
-    except Exception:
+        _gemini_client = genai.Client(api_key=api_key)
+        return _gemini_client
+    except Exception as e:
+        print(f"Error initializing Gemini client: {e}")
         return None
 
 def generate_insights(kpis: dict) -> dict:

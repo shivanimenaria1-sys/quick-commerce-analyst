@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 from typing import Tuple, List
+from app.services.data_cleaning import robust_to_datetime
 
 def engineer_features(df: pd.DataFrame) -> Tuple[pd.DataFrame, List[str]]:
     """
@@ -18,7 +19,10 @@ def engineer_features(df: pd.DataFrame) -> Tuple[pd.DataFrame, List[str]]:
     
     # 1. Date/time features (from order_date, order_time)
     if 'order_date' in engineered_df.columns:
-        dates = pd.to_datetime(engineered_df['order_date'], errors='coerce')
+        if pd.api.types.is_datetime64_any_dtype(engineered_df['order_date']):
+            dates = engineered_df['order_date']
+        else:
+            dates = robust_to_datetime(engineered_df['order_date'])
         engineered_df['order_day_of_week'] = dates.dt.day_name()
         engineered_df['order_month'] = dates.dt.month
         engineered_df['is_weekend'] = dates.dt.dayofweek >= 5
@@ -65,8 +69,11 @@ def engineer_features(df: pd.DataFrame) -> Tuple[pd.DataFrame, List[str]]:
         engineered_df['customer_order_count'] = np.nan
         
     if 'signup_date' in engineered_df.columns and 'order_date' in engineered_df.columns:
-        order_dates = pd.to_datetime(engineered_df['order_date'], errors='coerce')
-        signup_dates = pd.to_datetime(engineered_df['signup_date'], errors='coerce')
+        if pd.api.types.is_datetime64_any_dtype(engineered_df['order_date']):
+            order_dates = engineered_df['order_date']
+        else:
+            order_dates = robust_to_datetime(engineered_df['order_date'])
+        signup_dates = pd.to_datetime(engineered_df['signup_date'], errors='coerce', dayfirst=True)
         engineered_df['customer_tenure_days'] = (order_dates - signup_dates).dt.days
         
     # 3. Delivery features
