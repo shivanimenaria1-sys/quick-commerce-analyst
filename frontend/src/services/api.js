@@ -276,6 +276,23 @@ export const apiService = {
       throw new Error("Failed to export report.");
     }
     return response.blob();
+  },
+
+  exportCompleteReport: async (sessionId, chartImages) => {
+    const response = await fetch(`${API_BASE_URL}/api/report/export_complete`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        session_id: sessionId,
+        chart_images: chartImages
+      }),
+    });
+    if (!response.ok) {
+      throw new Error("Failed to export complete report.");
+    }
+    return response.blob();
   }
 };
 export default apiService;

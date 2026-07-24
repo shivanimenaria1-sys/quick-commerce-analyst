@@ -5,6 +5,7 @@ import { analysisSessionStorage } from '../services/storageService';
 import { useToast } from '../context/ToastContext';
 import ErrorBoundary from '../components/ErrorBoundary';
 import EmptyState from '../components/EmptyState';
+import { ChartRenderer } from '../components/charts/ChartRenderer';
 
 // Shimmer Loader for Report Center statistics card list
 const StatCardSkeleton = () => (
@@ -46,6 +47,11 @@ export const ReportCenter = () => {
   const [htmlPreviewUrl, setHtmlPreviewUrl] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   
+  // Progress modal and hidden rendering capture state
+  const [exportProgress, setExportProgress] = useState(null);
+  const [showProgressModal, setShowProgressModal] = useState(false);
+  const [renderChartsForCapture, setRenderChartsForCapture] = useState(false);
+  
   // Available report types list (dynamic catalog)
   const reportCatalog = [
     {
@@ -61,7 +67,7 @@ export const ReportCenter = () => {
     let active = true;
 
     const fetchAnalysisData = async () => {
-      // 1. Try cache first
+      // 1. Serve from cache immediately so the page isn't blank on navigation
       const cached = analysisSessionStorage.getSessionData(sessionId);
       if (cached) {
         setSessionInfo(cached);
@@ -72,28 +78,29 @@ export const ReportCenter = () => {
       try {
         const fresh = await apiService.getAnalysis(sessionId);
         if (!active) return;
-        
-        const sessionPayload = {
-          profileData: fresh.dataset_profile,
-          mappingData: fresh.confirmed_semantic_mapping,
-          domainData: fresh.domain_profile,
-          finalKPIs: fresh.selected_kpis || [],
-          dashboardPlan: { dashboard: fresh.dashboard_plan },
-          insights: fresh.insights || {}
-        };
-        
-        // Refresh local cache
-        analysisSessionStorage.saveSessionData(sessionId, sessionPayload);
-        
-        setSessionInfo(sessionPayload);
+
+        // Deep-merge fresh data into the existing cache via the canonical
+        // helper. Preserves insights even if the API returns an empty object
+        // (the cache value takes precedence in that case).
+        const merged = analysisSessionStorage.updateFromAnalysis(sessionId, fresh);
+
+        // DEBUG LOG – remove after verification
+        console.debug('[SESSION_DEBUG] ReportCenter after updateFromAnalysis:', {
+          sessionId: sessionId?.substring(0, 8),
+          insightKeys: Object.keys(merged?.insights || {}),
+          kpisCount: merged?.finalKPIs?.length ?? 0,
+          chartsCount: merged?.dashboardPlan?.dashboard?.charts?.length ?? 0,
+        });
+
+        setSessionInfo(merged);
         setError(null);
       } catch (err) {
-        console.error("Backend retrieval failed:", err);
+        console.error('Backend retrieval failed:', err);
         if (!cached) {
           if (active) {
-            setError("Analysis session is no longer available. Please upload your dataset again.");
+            setError('Analysis session is no longer available. Please upload your dataset again.');
             setTimeout(() => {
-              navigate('/upload', { state: { error: "Analysis session is no longer available. Please upload your dataset again." } });
+              navigate('/upload', { state: { error: 'Analysis session is no longer available. Please upload your dataset again.' } });
             }, 3500);
           }
         }
@@ -206,6 +213,112 @@ export const ReportCenter = () => {
       addToast("JSON summary downloaded successfully!", "success");
     } catch (err) {
       addToast(`JSON export failed: ${err.message}`, "error");
+    }
+  };
+
+  const handleExportCompletePDF = async () => {
+    if (!sessionInfo) return;
+    
+    setShowProgressModal(true);
+    setExportProgress({
+      collectKPIs: 'loading',
+      collectCharts: 'waiting',
+      embedVisualizations: 'waiting',
+      buildPDF: 'waiting',
+      downloading: 'waiting'
+    });
+
+    try {
+      // Step 1: Collecting KPIs
+      await new Promise(r => setTimeout(r, 600));
+      setExportProgress(prev => ({ ...prev, collectKPIs: 'done', collectCharts: 'loading' }));
+
+      // Step 2: Render charts in hidden container to capture SVG
+      setRenderChartsForCapture(true);
+      // Wait for Recharts to render completely
+      await new Promise(r => setTimeout(r, 1800));
+
+      const container = document.getElementById('capture-charts-container');
+      const items = container ? container.querySelectorAll('.capture-chart-item') : [];
+      const chartImages = {};
+
+      for (const item of Array.from(items)) {
+        const chartId = item.getAttribute('data-chart-id');
+        const svgEl = item.querySelector('svg');
+        if (svgEl && chartId) {
+          try {
+            const svgString = new XMLSerializer().serializeToString(svgEl);
+            const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+            const url = URL.createObjectURL(svgBlob);
+            
+            await new Promise((resolve) => {
+              const img = new Image();
+              img.onload = () => {
+                const canvas = document.createElement('canvas');
+                // Use standard double-resolution landscape aspect ratio for ReportLab PDF page width
+                canvas.width = 600;
+                canvas.height = 360;
+                const ctx = canvas.getContext('2d');
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(img, 0, 0, 600, 360);
+                const pngData = canvas.toDataURL('image/png');
+                chartImages[chartId] = pngData;
+                URL.revokeObjectURL(url);
+                resolve();
+              };
+              img.onerror = () => {
+                URL.revokeObjectURL(url);
+                resolve();
+              };
+              img.src = url;
+            });
+          } catch (err) {
+            console.error(`Failed to capture chart ${chartId}:`, err);
+          }
+        }
+      }
+
+      setRenderChartsForCapture(false); // Clean up hidden rendering
+      setExportProgress(prev => ({ ...prev, collectCharts: 'done', embedVisualizations: 'loading' }));
+      await new Promise(r => setTimeout(r, 600));
+
+      // Step 3: Embedding Visualizations
+      setExportProgress(prev => ({ ...prev, embedVisualizations: 'done', buildPDF: 'loading' }));
+      
+      // DEBUG LOG – remove after verification
+      console.debug('[SESSION_DEBUG] ReportCenter: before exportCompleteReport:', {
+        sessionId: sessionId?.substring(0, 8),
+        insightKeys: Object.keys(sessionInfo?.insights || {}),
+        kpisCount: sessionInfo?.finalKPIs?.length ?? 0,
+        chartsCount: sessionInfo?.dashboardPlan?.dashboard?.charts?.length ?? 0,
+        capturedChartImages: Object.keys(chartImages).length,
+      });
+
+      // Step 4: Build PDF on the backend
+      const response = await apiService.exportCompleteReport(sessionId, chartImages);
+      setExportProgress(prev => ({ ...prev, buildPDF: 'done', downloading: 'loading' }));
+      await new Promise(r => setTimeout(r, 600));
+
+      // Step 5: Downloading...
+      const filename = `executive_complete_report_${sessionId.substring(0, 8)}.pdf`;
+      triggerDownload(response, filename);
+      
+      setExportProgress(prev => ({ ...prev, downloading: 'done' }));
+      addToast('Complete analysis PDF report downloaded successfully!', 'success');
+      
+      // Close modal after successful download
+      setTimeout(() => {
+        setShowProgressModal(false);
+        setExportProgress(null);
+      }, 1000);
+      
+    } catch (err) {
+      console.error(err);
+      addToast(`Complete PDF export failed: ${err.message || err}`, 'error');
+      setShowProgressModal(false);
+      setExportProgress(null);
+      setRenderChartsForCapture(false);
     }
   };
 
@@ -355,22 +468,31 @@ export const ReportCenter = () => {
                   </div>
                   
                   {/* Export Options buttons */}
-                  <div className="grid grid-cols-2 gap-2 pt-4 border-t border-slate-150 dark:border-slate-850/60">
+                  <div className="grid grid-cols-2 gap-2 pt-4 border-t border-slate-150 dark:border-slate-850/60 font-sans">
+                    <button
+                      onClick={handleExportCompletePDF}
+                      className="col-span-2 px-3.5 py-2.5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 hover:bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-2 shadow-sm"
+                    >
+                      <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                      Export Complete Analysis Report (PDF)
+                    </button>
                     <button
                       onClick={() => handleExport('pdf')}
-                      className="px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs font-bold transition-all hover:bg-slate-205 dark:hover:bg-slate-800 cursor-pointer text-slate-700 dark:text-slate-300"
+                      className="px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-[11px] font-bold transition-all hover:bg-slate-200 dark:hover:bg-slate-800 cursor-pointer text-slate-700 dark:text-slate-300"
                     >
-                      Download PDF
+                      Download Brief PDF
                     </button>
                     <button
                       onClick={() => handleExport('html')}
-                      className="px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs font-bold transition-all hover:bg-slate-205 dark:hover:bg-slate-800 cursor-pointer text-slate-700 dark:text-slate-300"
+                      className="px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-[11px] font-bold transition-all hover:bg-slate-200 dark:hover:bg-slate-800 cursor-pointer text-slate-700 dark:text-slate-300"
                     >
-                      Download HTML
+                      Download Brief HTML
                     </button>
                     <button
                       onClick={handleExportJSON}
-                      className="col-span-2 px-3 py-2 rounded-xl border border-indigo-500/20 bg-indigo-500/5 text-indigo-500 text-xs font-bold transition-all hover:bg-indigo-500/10 cursor-pointer"
+                      className="col-span-2 px-3 py-2 rounded-xl border border-indigo-500/20 bg-indigo-500/5 text-indigo-550 text-[11px] font-bold transition-all hover:bg-indigo-500/10 cursor-pointer"
                     >
                       Download JSON Summary
                     </button>
@@ -421,6 +543,69 @@ export const ReportCenter = () => {
         </div>
 
       </main>
+
+      {/* Dynamic Export Progress Modal */}
+      {showProgressModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 font-sans select-none animate-fadeIn">
+          <div className="bg-white dark:bg-[#12131a] border border-slate-200 dark:border-slate-800 rounded-3xl p-6 max-w-sm w-full shadow-2xl space-y-6 text-left">
+            <div>
+              <h3 className="text-base font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+                <svg className="w-5 h-5 text-emerald-500 animate-spin" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Preparing Report...
+              </h3>
+              <p className="text-xs text-slate-500 mt-1">Please wait while the platform compiles the document.</p>
+            </div>
+
+            <div className="space-y-3">
+              {[
+                { key: 'collectKPIs', label: 'Collecting KPIs and Metadata' },
+                { key: 'collectCharts', label: 'Rendering and Capturing Visualizations' },
+                { key: 'embedVisualizations', label: 'Embedding Vector Charts' },
+                { key: 'buildPDF', label: 'Compiling ReportLab PDF layout' },
+                { key: 'downloading', label: 'Downloading Document' }
+              ].map(step => {
+                const status = exportProgress?.[step.key];
+                return (
+                  <div key={step.key} className="flex items-center gap-3 text-xs">
+                    {status === 'done' ? (
+                      <span className="w-4 h-4 rounded-full bg-emerald-500/10 border border-emerald-500 text-emerald-500 flex items-center justify-center font-bold text-[10px]">&#10003;</span>
+                    ) : status === 'loading' ? (
+                      <span className="w-4 h-4 rounded-full bg-indigo-500/10 border border-indigo-500 text-indigo-500 flex items-center justify-center animate-pulse text-[9px]">&#8226;</span>
+                    ) : (
+                      <span className="w-4 h-4 rounded-full bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800" />
+                    )}
+                    <span className={`font-semibold ${status === 'done' ? 'text-slate-500 line-through' : status === 'loading' ? 'text-indigo-500 font-bold' : 'text-slate-400'}`}>
+                      {step.label}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Hidden container for rendering charts temporarily to capture SVG */}
+      {renderChartsForCapture && (
+        <div 
+          id="capture-charts-container" 
+          style={{ position: 'absolute', left: '-9999px', top: '-9999px', width: '800px', opacity: 0 }}
+        >
+          {sessionInfo?.dashboardPlan?.dashboard?.charts?.map((c) => (
+            <div 
+              key={c.id || c.chart_id} 
+              className="capture-chart-item" 
+              data-chart-id={c.id || c.chart_id} 
+              style={{ height: '360px', width: '600px', marginBottom: '20px' }}
+            >
+              <ChartRenderer visualization={{ ...c, id: c.id || c.chart_id }} />
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

@@ -48,6 +48,7 @@ export const ExploreKPIs = () => {
     let active = true;
 
     const fetchAnalysisData = async () => {
+      // 1. Serve from cache immediately so the page isn't blank on navigation
       const cached = analysisSessionStorage.getSessionData(sessionId);
       if (cached) {
         setSessionInfo(cached);
@@ -57,25 +58,28 @@ export const ExploreKPIs = () => {
       try {
         const fresh = await apiService.getAnalysis(sessionId);
         if (!active) return;
-        
-        const sessionPayload = {
-          profileData: fresh.dataset_profile,
-          mappingData: fresh.confirmed_semantic_mapping,
-          domainData: fresh.domain_profile,
-          finalKPIs: fresh.selected_kpis || [],
-          dashboardPlan: { dashboard: fresh.dashboard_plan }
-        };
-        
-        analysisSessionStorage.saveSessionData(sessionId, sessionPayload);
-        setSessionInfo(sessionPayload);
+
+        // 2. Use the canonical helper: deep-merges fresh API data into the
+        //    existing cache, preserving insights and any other cached fields
+        //    that the API response does not include.
+        const merged = analysisSessionStorage.updateFromAnalysis(sessionId, fresh);
+
+        // DEBUG LOG – remove after verification
+        console.debug('[SESSION_DEBUG] ExploreKPIs after updateFromAnalysis:', {
+          sessionId: sessionId?.substring(0, 8),
+          insightKeys: Object.keys(merged?.insights || {}),
+          kpisCount: merged?.finalKPIs?.length ?? 0,
+        });
+
+        setSessionInfo(merged);
         setError(null);
       } catch (err) {
-        console.error("Backend retrieval failed:", err);
+        console.error('Backend retrieval failed:', err);
         if (!cached) {
           if (active) {
-            setError("Analysis session is no longer available. Please upload your dataset again.");
+            setError('Analysis session is no longer available. Please upload your dataset again.');
             setTimeout(() => {
-              navigate('/upload', { state: { error: "Analysis session is no longer available. Please upload your dataset again." } });
+              navigate('/upload', { state: { error: 'Analysis session is no longer available. Please upload your dataset again.' } });
             }, 3500);
           }
         }

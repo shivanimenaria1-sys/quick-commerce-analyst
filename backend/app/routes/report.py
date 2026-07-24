@@ -141,3 +141,52 @@ def export_report_file(request: ExportRequest):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=str(e)
         )
+
+
+class CompleteExportRequest(BaseModel):
+    session_id: str
+    chart_images: Dict[str, str] = {}
+
+
+@router.post("/report/export_complete")
+def export_complete_report(request: CompleteExportRequest):
+    """
+    Exports a professional corporate PDF report containing the full session profile,
+    visualizations, KPI listings, insights, and embedded charts.
+    """
+    from app.services.session_store.analysis_store import analysis_store
+    from app.services.report_generator.exporter import CompletePDFReportExporter
+    
+    logger.info(f"Complete Report Export: Retrieving session '{request.session_id}'")
+    try:
+        session_data = analysis_store.get(request.session_id)
+        if not session_data:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Analysis session {request.session_id} not found."
+            )
+            
+        # Add session_id to data for report metadata context
+        session_data_copy = dict(session_data)
+        session_data_copy["session_id"] = request.session_id
+        
+        exporter = CompletePDFReportExporter()
+        report_bytes = exporter.export(session_data_copy, request.chart_images)
+        
+        buffer = io.BytesIO(report_bytes)
+        buffer.seek(0)
+        
+        filename = f"executive_complete_report_{request.session_id[:8]}.pdf"
+        headers = {
+            "Content-Disposition": f'attachment; filename="{filename}"'
+        }
+        return StreamingResponse(buffer, media_type="application/pdf", headers=headers)
+        
+    except Exception as e:
+        import traceback
+        logger.exception("Complete report export failed")
+        traceback.print_exc()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e)
+        )

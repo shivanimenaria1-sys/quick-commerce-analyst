@@ -246,6 +246,15 @@ const Upload = () => {
         insights: insights
       });
 
+      // DEBUG LOG – remove after verification
+      console.debug('[SESSION_DEBUG] Upload: initial session saved:', {
+        sessionId: sessionId?.substring(0, 8),
+        insightKeys: Object.keys(insights || {}),
+        kpisCount: selectedKPIs?.length ?? 0,
+        chartsCount: plan?.dashboard?.charts?.length ?? 0,
+        reportMetadataPresent: !!(updatedContext?.report_metadata),
+      });
+
       addToast("Business diagnostics analysis completed successfully!", "success");
       setCurrentStep('profile_complete');
       setUploading(false);
