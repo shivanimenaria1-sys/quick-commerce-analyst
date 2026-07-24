@@ -1,0 +1,752 @@
+{
+  "44c4f64fb7bf1cc576bcbcde4bde3b90486282e437e9645b81d47f24c96a5b96": {
+    "schema_fingerprint": "44c4f64fb7bf1cc576bcbcde4bde3b90486282e437e9645b81d47f24c96a5b96",
+    "columns": {
+      "order_id": {
+        "semantic_role": "id_like",
+        "confidence": 0.98,
+        "reasoning": "Column name and unique alphanumeric values strongly indicate an identifier.",
+        "alternative_roles": [
+          {
+            "role": "unknown",
+            "confidence": 0.01
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "customer_id": {
+        "semantic_role": "customer_id_like",
+        "confidence": 0.99,
+        "reasoning": "Explicitly named 'customer_id' with unique alphanumeric values.",
+        "alternative_roles": [
+          {
+            "role": "id_like",
+            "confidence": 0.85
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "order_date": {
+        "semantic_role": "date_like",
+        "confidence": 0.99,
+        "reasoning": "Column name 'order_date' and date format sample values.",
+        "alternative_roles": [
+          {
+            "role": "datetime_like",
+            "confidence": 0.7
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "order_time": {
+        "semantic_role": "datetime_like",
+        "confidence": 0.9,
+        "reasoning": "Column name 'order_time' and time format sample values indicate a specific time.",
+        "alternative_roles": [
+          {
+            "role": "unknown",
+            "confidence": 0.4
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "city": {
+        "semantic_role": "location_like",
+        "confidence": 0.99,
+        "reasoning": "Column name 'city' and sample values are names of cities.",
+        "alternative_roles": [
+          {
+            "role": "text_like",
+            "confidence": 0.7
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "category": {
+        "semantic_role": "category_like",
+        "confidence": 0.99,
+        "reasoning": "Explicitly named 'category' with categorical product types.",
+        "alternative_roles": [
+          {
+            "role": "text_like",
+            "confidence": 0.7
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "order_value": {
+        "semantic_role": "revenue_like",
+        "confidence": 0.95,
+        "reasoning": "Column name 'order_value' and float values suggest a monetary amount.",
+        "alternative_roles": [
+          {
+            "role": "currency_like",
+            "confidence": 0.9
+          },
+          {
+            "role": "price_like",
+            "confidence": 0.8
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "quantity": {
+        "semantic_role": "quantity_like",
+        "confidence": 0.99,
+        "reasoning": "Explicitly named 'quantity' with integer values representing counts.",
+        "alternative_roles": [
+          {
+            "role": "unknown",
+            "confidence": 0.01
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "payment_mode": {
+        "semantic_role": "status_like",
+        "confidence": 0.85,
+        "reasoning": "Describes the method of payment, which is a type of status or category.",
+        "alternative_roles": [
+          {
+            "role": "text_like",
+            "confidence": 0.8
+          },
+          {
+            "role": "category_like",
+            "confidence": 0.7
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "delivery_time_minutes": {
+        "semantic_role": "duration_like",
+        "confidence": 0.99,
+        "reasoning": "Column name 'delivery_time_minutes' clearly indicates a duration.",
+        "alternative_roles": [
+          {
+            "role": "unknown",
+            "confidence": 0.01
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "promised_delivery_time": {
+        "semantic_role": "duration_like",
+        "confidence": 0.99,
+        "reasoning": "Column name 'promised_delivery_time' and integer values indicate a duration.",
+        "alternative_roles": [
+          {
+            "role": "unknown",
+            "confidence": 0.01
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "order_status": {
+        "semantic_role": "status_like",
+        "confidence": 0.99,
+        "reasoning": "Explicitly named 'order_status' with categorical values describing states.",
+        "alternative_roles": [
+          {
+            "role": "text_like",
+            "confidence": 0.7
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "customer_rating": {
+        "semantic_role": "rating_like",
+        "confidence": 0.99,
+        "reasoning": "Explicitly named 'customer_rating' with numerical values within a typical rating range.",
+        "alternative_roles": [
+          {
+            "role": "unknown",
+            "confidence": 0.01
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "pincode": {
+        "semantic_role": "location_like",
+        "confidence": 0.9,
+        "reasoning": "'Pincode' is a geographical identifier, fitting 'location_like'.",
+        "alternative_roles": [
+          {
+            "role": "id_like",
+            "confidence": 0.7
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "dark_store_id": {
+        "semantic_role": "id_like",
+        "confidence": 0.95,
+        "reasoning": "Column name 'dark_store_id' and alphanumeric format indicate an identifier.",
+        "alternative_roles": [
+          {
+            "role": "location_like",
+            "confidence": 0.7
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "delivery_partner_id": {
+        "semantic_role": "id_like",
+        "confidence": 0.98,
+        "reasoning": "Column name 'delivery_partner_id' and unique alphanumeric values indicate an identifier.",
+        "alternative_roles": [
+          {
+            "role": "employee_like",
+            "confidence": 0.6
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "rider_shift_minutes": {
+        "semantic_role": "duration_like",
+        "confidence": 0.99,
+        "reasoning": "Column name 'rider_shift_minutes' clearly indicates a duration in minutes.",
+        "alternative_roles": [
+          {
+            "role": "unknown",
+            "confidence": 0.01
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "rider_active_minutes": {
+        "semantic_role": "duration_like",
+        "confidence": 0.99,
+        "reasoning": "Column name 'rider_active_minutes' clearly indicates a duration in minutes.",
+        "alternative_roles": [
+          {
+            "role": "unknown",
+            "confidence": 0.01
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "discount_applied": {
+        "semantic_role": "currency_like",
+        "confidence": 0.9,
+        "reasoning": "Represents a monetary discount, which is a cost or a reduction in revenue.",
+        "alternative_roles": [
+          {
+            "role": "cost_like",
+            "confidence": 0.8
+          },
+          {
+            "role": "revenue_like",
+            "confidence": 0.7
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "delivery_charge": {
+        "semantic_role": "cost_like",
+        "confidence": 0.95,
+        "reasoning": "Represents a monetary charge for delivery, fitting 'cost_like'.",
+        "alternative_roles": [
+          {
+            "role": "currency_like",
+            "confidence": 0.9
+          },
+          {
+            "role": "price_like",
+            "confidence": 0.7
+          }
+        ],
+        "needs_user_confirmation": false
+      }
+    }
+  },
+  "8fd1b81216f7ff3e26235979bf23a923e4f65db8d0f8bafa1a1bbf890025a0d3": {
+    "schema_fingerprint": "8fd1b81216f7ff3e26235979bf23a923e4f65db8d0f8bafa1a1bbf890025a0d3",
+    "columns": {
+      "order_id": {
+        "semantic_role": "id_like",
+        "confidence": 1.0,
+        "reasoning": "Column name clearly indicates an identifier for an order.",
+        "alternative_roles": [],
+        "needs_user_confirmation": false
+      },
+      "customer_id": {
+        "semantic_role": "customer_id_like",
+        "confidence": 1.0,
+        "reasoning": "Column name clearly indicates an identifier for a customer.",
+        "alternative_roles": [
+          {
+            "role": "id_like",
+            "confidence": 0.9
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "order_date": {
+        "semantic_role": "date_like",
+        "confidence": 1.0,
+        "reasoning": "Column name clearly indicates a date for an order.",
+        "alternative_roles": [],
+        "needs_user_confirmation": false
+      },
+      "order_time": {
+        "semantic_role": "datetime_like",
+        "confidence": 0.95,
+        "reasoning": "Column name clearly indicates a time component, part of a datetime.",
+        "alternative_roles": [
+          {
+            "role": "date_like",
+            "confidence": 0.1
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "city": {
+        "semantic_role": "location_like",
+        "confidence": 1.0,
+        "reasoning": "The column name 'city' directly indicates a geographical location.",
+        "alternative_roles": [],
+        "needs_user_confirmation": false
+      },
+      "category": {
+        "semantic_role": "category_like",
+        "confidence": 1.0,
+        "reasoning": "Column name directly indicates a category.",
+        "alternative_roles": [],
+        "needs_user_confirmation": false
+      },
+      "order_value": {
+        "semantic_role": "revenue_like",
+        "confidence": 0.9,
+        "reasoning": "Represents the total monetary value of an order, indicating revenue.",
+        "alternative_roles": [
+          {
+            "role": "currency_like",
+            "confidence": 0.8
+          },
+          {
+            "role": "price_like",
+            "confidence": 0.7
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "quantity": {
+        "semantic_role": "quantity_like",
+        "confidence": 1.0,
+        "reasoning": "Column name directly indicates a quantity.",
+        "alternative_roles": [],
+        "needs_user_confirmation": false
+      },
+      "payment_mode": {
+        "semantic_role": "text_like",
+        "confidence": 0.8,
+        "reasoning": "Describes the method of payment, typically textual or categorical.",
+        "alternative_roles": [
+          {
+            "role": "category_like",
+            "confidence": 0.7
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "delivery_time_minutes": {
+        "semantic_role": "duration_like",
+        "confidence": 1.0,
+        "reasoning": "Represents a duration in minutes for delivery.",
+        "alternative_roles": [],
+        "needs_user_confirmation": false
+      },
+      "promised_delivery_time": {
+        "semantic_role": "datetime_like",
+        "confidence": 0.9,
+        "reasoning": "Indicates a specific point in time when delivery is promised.",
+        "alternative_roles": [
+          {
+            "role": "date_like",
+            "confidence": 0.7
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "order_status": {
+        "semantic_role": "status_like",
+        "confidence": 1.0,
+        "reasoning": "Column name directly indicates the status of an order.",
+        "alternative_roles": [],
+        "needs_user_confirmation": false
+      },
+      "customer_rating": {
+        "semantic_role": "rating_like",
+        "confidence": 1.0,
+        "reasoning": "Column name directly indicates a customer rating.",
+        "alternative_roles": [],
+        "needs_user_confirmation": false
+      },
+      "pincode": {
+        "semantic_role": "location_like",
+        "confidence": 0.9,
+        "reasoning": "Pincode (Zip Code) identifies a specific geographical location.",
+        "alternative_roles": [
+          {
+            "role": "id_like",
+            "confidence": 0.8
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "dark_store_id": {
+        "semantic_role": "id_like",
+        "confidence": 1.0,
+        "reasoning": "Column name clearly indicates an identifier for a dark store.",
+        "alternative_roles": [],
+        "needs_user_confirmation": false
+      },
+      "delivery_partner_id": {
+        "semantic_role": "employee_like",
+        "confidence": 0.85,
+        "reasoning": "Identifies a delivery partner, which is a person or entity performing a service.",
+        "alternative_roles": [
+          {
+            "role": "id_like",
+            "confidence": 0.8
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "rider_shift_minutes": {
+        "semantic_role": "duration_like",
+        "confidence": 1.0,
+        "reasoning": "Represents a duration in minutes for a rider's shift.",
+        "alternative_roles": [],
+        "needs_user_confirmation": false
+      },
+      "rider_active_minutes": {
+        "semantic_role": "duration_like",
+        "confidence": 1.0,
+        "reasoning": "Represents a duration in minutes for a rider's active time.",
+        "alternative_roles": [],
+        "needs_user_confirmation": false
+      },
+      "discount_applied": {
+        "semantic_role": "boolean_flag_like",
+        "confidence": 0.8,
+        "reasoning": "Indicates whether a discount was applied, typically a true/false flag.",
+        "alternative_roles": [
+          {
+            "role": "currency_like",
+            "confidence": 0.3
+          },
+          {
+            "role": "percentage_like",
+            "confidence": 0.2
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "delivery_charge": {
+        "semantic_role": "cost_like",
+        "confidence": 0.9,
+        "reasoning": "Represents a monetary charge for delivery, indicating a cost.",
+        "alternative_roles": [
+          {
+            "role": "currency_like",
+            "confidence": 0.8
+          }
+        ],
+        "needs_user_confirmation": false
+      }
+    }
+  },
+  "b6e386acc125b7bc31cc356f2320f05fab27e963a61c5df50d4460bdb294757a": {
+    "schema_fingerprint": "b6e386acc125b7bc31cc356f2320f05fab27e963a61c5df50d4460bdb294757a",
+    "columns": {
+      "order_id": {
+        "semantic_role": "id_like",
+        "confidence": 1.0,
+        "reasoning": "Column name and sample values clearly indicate a unique identifier for orders.",
+        "alternative_roles": [],
+        "needs_user_confirmation": false
+      },
+      "customer_id": {
+        "semantic_role": "customer_id_like",
+        "confidence": 1.0,
+        "reasoning": "Column name and sample values clearly indicate a unique identifier for customers.",
+        "alternative_roles": [
+          {
+            "role": "id_like",
+            "confidence": 0.9
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "signup_date": {
+        "semantic_role": "date_like",
+        "confidence": 1.0,
+        "reasoning": "Column name and date format samples indicate a date.",
+        "alternative_roles": [
+          {
+            "role": "datetime_like",
+            "confidence": 0.8
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "order_date": {
+        "semantic_role": "date_like",
+        "confidence": 1.0,
+        "reasoning": "Column name and date format samples indicate a date.",
+        "alternative_roles": [
+          {
+            "role": "datetime_like",
+            "confidence": 0.8
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "order_time": {
+        "semantic_role": "datetime_like",
+        "confidence": 0.9,
+        "reasoning": "Column name and time format samples indicate a time component.",
+        "alternative_roles": [
+          {
+            "role": "text_like",
+            "confidence": 0.1
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "city": {
+        "semantic_role": "location_like",
+        "confidence": 1.0,
+        "reasoning": "Column name and sample values are names of cities, indicating a location.",
+        "alternative_roles": [
+          {
+            "role": "text_like",
+            "confidence": 0.1
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "dark_store_id": {
+        "semantic_role": "id_like",
+        "confidence": 0.95,
+        "reasoning": "Column name and format suggest a unique identifier for a dark store.",
+        "alternative_roles": [
+          {
+            "role": "location_like",
+            "confidence": 0.8
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "delivery_partner_id": {
+        "semantic_role": "employee_like",
+        "confidence": 0.9,
+        "reasoning": "Column name and sample values indicate an identifier for a delivery partner/rider.",
+        "alternative_roles": [
+          {
+            "role": "id_like",
+            "confidence": 0.85
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "category": {
+        "semantic_role": "category_like",
+        "confidence": 1.0,
+        "reasoning": "Column name and sample values clearly represent product categories.",
+        "alternative_roles": [
+          {
+            "role": "text_like",
+            "confidence": 0.1
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "product_name": {
+        "semantic_role": "text_like",
+        "confidence": 0.95,
+        "reasoning": "Column name and sample values are descriptive names of products.",
+        "alternative_roles": [
+          {
+            "role": "category_like",
+            "confidence": 0.1
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "quantity": {
+        "semantic_role": "quantity_like",
+        "confidence": 1.0,
+        "reasoning": "Column name and integer values represent the count of items.",
+        "alternative_roles": [],
+        "needs_user_confirmation": false
+      },
+      "order_value": {
+        "semantic_role": "revenue_like",
+        "confidence": 0.95,
+        "reasoning": "Represents the total monetary value of an order, directly related to revenue.",
+        "alternative_roles": [
+          {
+            "role": "currency_like",
+            "confidence": 0.9
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "discount_applied": {
+        "semantic_role": "cost_like",
+        "confidence": 0.9,
+        "reasoning": "Represents a monetary discount, which impacts revenue, thus related to cost/currency.",
+        "alternative_roles": [
+          {
+            "role": "currency_like",
+            "confidence": 0.85
+          },
+          {
+            "role": "revenue_like",
+            "confidence": 0.7
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "delivery_charge": {
+        "semantic_role": "cost_like",
+        "confidence": 0.9,
+        "reasoning": "Represents a monetary charge for delivery, which is a cost or revenue component.",
+        "alternative_roles": [
+          {
+            "role": "currency_like",
+            "confidence": 0.85
+          },
+          {
+            "role": "revenue_like",
+            "confidence": 0.7
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "payment_mode": {
+        "semantic_role": "category_like",
+        "confidence": 0.9,
+        "reasoning": "Describes the method of payment, functioning as a categorical descriptor.",
+        "alternative_roles": [
+          {
+            "role": "text_like",
+            "confidence": 0.7
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "promised_delivery_time": {
+        "semantic_role": "duration_like",
+        "confidence": 0.95,
+        "reasoning": "Represents a duration in minutes for promised delivery.",
+        "alternative_roles": [
+          {
+            "role": "quantity_like",
+            "confidence": 0.7
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "delivery_time_minutes": {
+        "semantic_role": "duration_like",
+        "confidence": 1.0,
+        "reasoning": "Column name explicitly states \"minutes\", indicating a duration.",
+        "alternative_roles": [
+          {
+            "role": "quantity_like",
+            "confidence": 0.7
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "order_status": {
+        "semantic_role": "status_like",
+        "confidence": 1.0,
+        "reasoning": "Column name and sample values clearly indicate the status of an order.",
+        "alternative_roles": [
+          {
+            "role": "text_like",
+            "confidence": 0.1
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "cancellation_reason": {
+        "semantic_role": "text_like",
+        "confidence": 0.9,
+        "reasoning": "Provides a textual explanation for why an order was cancelled.",
+        "alternative_roles": [
+          {
+            "role": "category_like",
+            "confidence": 0.7
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "customer_rating": {
+        "semantic_role": "rating_like",
+        "confidence": 1.0,
+        "reasoning": "Column name and numerical values clearly indicate a customer rating.",
+        "alternative_roles": [
+          {
+            "role": "percentage_like",
+            "confidence": 0.1
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "pincode": {
+        "semantic_role": "location_like",
+        "confidence": 0.95,
+        "reasoning": "Pincode is a numerical code used to identify a specific geographic location.",
+        "alternative_roles": [
+          {
+            "role": "id_like",
+            "confidence": 0.8
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "rider_shift_minutes": {
+        "semantic_role": "duration_like",
+        "confidence": 1.0,
+        "reasoning": "Column name explicitly states \"minutes\" and refers to a shift, indicating duration.",
+        "alternative_roles": [
+          {
+            "role": "quantity_like",
+            "confidence": 0.7
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "rider_active_minutes": {
+        "semantic_role": "duration_like",
+        "confidence": 1.0,
+        "reasoning": "Column name explicitly states \"minutes\" and refers to active time, indicating duration.",
+        "alternative_roles": [
+          {
+            "role": "quantity_like",
+            "confidence": 0.7
+          }
+        ],
+        "needs_user_confirmation": false
+      },
+      "cost_price": {
+        "semantic_role": "cost_like",
+        "confidence": 1.0,
+        "reasoning": "Column name and numerical values clearly indicate the monetary cost of a product.",
+        "alternative_roles": [
+          {
+            "role": "currency_like",
+            "confidence": 0.9
+          }
+        ],
+        "needs_user_confirmation": false
+      }
+    }
+  }
+}

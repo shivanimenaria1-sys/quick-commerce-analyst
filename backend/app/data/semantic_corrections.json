@@ -1,0 +1,79 @@
+[
+  {
+    "schema_fingerprint": "b6c0339590ecfda876dcf7f697f22e064e84204a3d6dc08ac301b562e8f77061",
+    "column_name": "Amount_USD",
+    "original_role": "revenue_like",
+    "corrected_role": "price_like",
+    "timestamp": "2026-07-23T14:56:22.807519Z"
+  },
+  {
+    "schema_fingerprint": "b6c0339590ecfda876dcf7f697f22e064e84204a3d6dc08ac301b562e8f77061",
+    "column_name": "Amount_USD",
+    "original_role": "revenue_like",
+    "corrected_role": "price_like",
+    "timestamp": "2026-07-23T14:56:41.588565Z"
+  },
+  {
+    "schema_fingerprint": "b6c0339590ecfda876dcf7f697f22e064e84204a3d6dc08ac301b562e8f77061",
+    "column_name": "Amount_USD",
+    "original_role": "revenue_like",
+    "corrected_role": "price_like",
+    "timestamp": "2026-07-23T14:56:54.298171Z"
+  },
+  {
+    "schema_fingerprint": "b6c0339590ecfda876dcf7f697f22e064e84204a3d6dc08ac301b562e8f77061",
+    "column_name": "Amount_USD",
+    "original_role": "revenue_like",
+    "corrected_role": "price_like",
+    "timestamp": "2026-07-23T15:09:05.525267Z"
+  },
+  {
+    "schema_fingerprint": "b6c0339590ecfda876dcf7f697f22e064e84204a3d6dc08ac301b562e8f77061",
+    "column_name": "Amount_USD",
+    "original_role": "revenue_like",
+    "corrected_role": "price_like",
+    "timestamp": "2026-07-23T15:10:01.813218Z"
+  },
+  {
+    "schema_fingerprint": "b6c0339590ecfda876dcf7f697f22e064e84204a3d6dc08ac301b562e8f77061",
+    "column_name": "Amount_USD",
+    "original_role": "revenue_like",
+    "corrected_role": "price_like",
+    "timestamp": "2026-07-23T16:42:09.758995Z"
+  },
+  {
+    "schema_fingerprint": "b6c0339590ecfda876dcf7f697f22e064e84204a3d6dc08ac301b562e8f77061",
+    "column_name": "Amount_USD",
+    "original_role": "revenue_like",
+    "corrected_role": "price_like",
+    "timestamp": "2026-07-23T16:47:54.304314Z"
+  },
+  {
+    "schema_fingerprint": "b6c0339590ecfda876dcf7f697f22e064e84204a3d6dc08ac301b562e8f77061",
+    "column_name": "Amount_USD",
+    "original_role": "revenue_like",
+    "corrected_role": "price_like",
+    "timestamp": "2026-07-23T16:55:11.537718Z"
+  },
+  {
+    "schema_fingerprint": "b6c0339590ecfda876dcf7f697f22e064e84204a3d6dc08ac301b562e8f77061",
+    "column_name": "Amount_USD",
+    "original_role": "revenue_like",
+    "corrected_role": "price_like",
+    "timestamp": "2026-07-23T17:04:16.214372Z"
+  },
+  {
+    "schema_fingerprint": "b6c0339590ecfda876dcf7f697f22e064e84204a3d6dc08ac301b562e8f77061",
+    "column_name": "Amount_USD",
+    "original_role": "revenue_like",
+    "corrected_role": "price_like",
+    "timestamp": "2026-07-23T17:04:49.560632Z"
+  },
+  {
+    "schema_fingerprint": "b6c0339590ecfda876dcf7f697f22e064e84204a3d6dc08ac301b562e8f77061",
+    "column_name": "Amount_USD",
+    "original_role": "revenue_like",
+    "corrected_role": "price_like",
+    "timestamp": "2026-07-23T17:22:35.225621Z"
+  }
+]

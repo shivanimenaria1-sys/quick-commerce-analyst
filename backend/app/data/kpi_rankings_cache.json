@@ -1,0 +1,4310 @@
+{
+  "924aedf419746a33a55743a94eb3ac8aa5b15e7084c77b75c9036bf7c7d46029": {
+    "selected_kpis": [
+      {
+        "id": "total_revenue",
+        "display_name": "Total Sales Revenue",
+        "required_semantic_roles": [
+          "revenue_like"
+        ],
+        "formula": {
+          "operation": "SUM",
+          "fields": [
+            "revenue_like"
+          ]
+        },
+        "aggregation": "SUM",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates the sum of all transaction revenue fields.",
+        "dependencies": [],
+        "rank": 1,
+        "importance": 0.98,
+        "reason": "Primary top-line metric.",
+        "selected": true
+      },
+      {
+        "id": "average_revenue",
+        "display_name": "Average Revenue",
+        "required_semantic_roles": [
+          "revenue_like"
+        ],
+        "formula": {
+          "operation": "AVG",
+          "fields": [
+            "revenue_like"
+          ]
+        },
+        "aggregation": "AVG",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates the average transaction value of revenue fields.",
+        "dependencies": [],
+        "rank": 2,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "revenue_distribution",
+        "display_name": "Revenue Distribution",
+        "required_semantic_roles": [
+          "revenue_like"
+        ],
+        "formula": {
+          "operation": "DISTRIBUTION",
+          "fields": [
+            "revenue_like"
+          ]
+        },
+        "aggregation": "DISTRIBUTION",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Renders transaction counts across dynamic revenue brackets.",
+        "dependencies": [],
+        "rank": 3,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "revenue_trend",
+        "display_name": "Revenue Trend",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "GROUP_TREND",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "TREND",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Monitors total revenue shifts over date records.",
+        "dependencies": [
+          "total_revenue"
+        ],
+        "rank": 4,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "revenue_growth_rate",
+        "display_name": "Revenue Growth Rate",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "PERIOD_GROWTH",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "RATE",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Computes period-over-period growth rate of revenue.",
+        "dependencies": [
+          "revenue_trend"
+        ],
+        "rank": 5,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "monthly_revenue",
+        "display_name": "Monthly Revenue",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "GROUP_MONTH",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "SUM",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Aggregates revenue values grouped by month.",
+        "dependencies": [
+          "total_revenue"
+        ],
+        "rank": 6,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "weekly_revenue",
+        "display_name": "Weekly Revenue",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "GROUP_WEEK",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "SUM",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Aggregates revenue values grouped by ISO week.",
+        "dependencies": [
+          "total_revenue"
+        ],
+        "rank": 7,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "rolling_revenue",
+        "display_name": "Rolling Revenue",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "ROLLING_SUM",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "TREND",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates 7-record rolling total of sales revenue.",
+        "dependencies": [
+          "total_revenue"
+        ],
+        "rank": 8,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "category_performance",
+        "display_name": "Category Performance",
+        "required_semantic_roles": [
+          "category_like"
+        ],
+        "formula": {
+          "operation": "GROUP_COUNT",
+          "fields": [
+            "category_like"
+          ]
+        },
+        "aggregation": "DISTRIBUTION",
+        "confidence": 1.0,
+        "generator_plugin": "category_plugin",
+        "explanation": "Groups transaction volumes by category headers.",
+        "dependencies": [],
+        "rank": 9,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "category_share",
+        "display_name": "Category Share",
+        "required_semantic_roles": [
+          "category_like"
+        ],
+        "formula": {
+          "operation": "GROUP_PERCENT",
+          "fields": [
+            "category_like"
+          ]
+        },
+        "aggregation": "RATIO",
+        "confidence": 1.0,
+        "generator_plugin": "category_plugin",
+        "explanation": "Computes proportion percentage of total count per category label.",
+        "dependencies": [
+          "category_performance"
+        ],
+        "rank": 10,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      }
+    ]
+  },
+  "32b4ba6430faaaa039ab2a035eccf1b74aea9bbaf976221cde0f7e6e40f5a7da": {
+    "selected_kpis": [
+      {
+        "id": "total_revenue",
+        "display_name": "Total Sales Revenue",
+        "required_semantic_roles": [
+          "revenue_like"
+        ],
+        "formula": {
+          "operation": "SUM",
+          "fields": [
+            "revenue_like"
+          ]
+        },
+        "aggregation": "SUM",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates the sum of all transaction revenue fields.",
+        "dependencies": [],
+        "rank": 1,
+        "importance": 0.98,
+        "reason": "Primary top-line metric.",
+        "selected": true
+      },
+      {
+        "id": "average_revenue",
+        "display_name": "Average Revenue",
+        "required_semantic_roles": [
+          "revenue_like"
+        ],
+        "formula": {
+          "operation": "AVG",
+          "fields": [
+            "revenue_like"
+          ]
+        },
+        "aggregation": "AVG",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates the average transaction value of revenue fields.",
+        "dependencies": [],
+        "rank": 2,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "revenue_distribution",
+        "display_name": "Revenue Distribution",
+        "required_semantic_roles": [
+          "revenue_like"
+        ],
+        "formula": {
+          "operation": "DISTRIBUTION",
+          "fields": [
+            "revenue_like"
+          ]
+        },
+        "aggregation": "DISTRIBUTION",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Renders transaction counts across dynamic revenue brackets.",
+        "dependencies": [],
+        "rank": 3,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "revenue_trend",
+        "display_name": "Revenue Trend",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "GROUP_TREND",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "TREND",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Monitors total revenue shifts over date records.",
+        "dependencies": [
+          "total_revenue"
+        ],
+        "rank": 4,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "revenue_growth_rate",
+        "display_name": "Revenue Growth Rate",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "PERIOD_GROWTH",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "RATE",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Computes period-over-period growth rate of revenue.",
+        "dependencies": [
+          "revenue_trend"
+        ],
+        "rank": 5,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "monthly_revenue",
+        "display_name": "Monthly Revenue",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "GROUP_MONTH",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "SUM",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Aggregates revenue values grouped by month.",
+        "dependencies": [
+          "total_revenue"
+        ],
+        "rank": 6,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "weekly_revenue",
+        "display_name": "Weekly Revenue",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "GROUP_WEEK",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "SUM",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Aggregates revenue values grouped by ISO week.",
+        "dependencies": [
+          "total_revenue"
+        ],
+        "rank": 7,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "rolling_revenue",
+        "display_name": "Rolling Revenue",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "ROLLING_SUM",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "TREND",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates 7-record rolling total of sales revenue.",
+        "dependencies": [
+          "total_revenue"
+        ],
+        "rank": 8,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "category_performance",
+        "display_name": "Category Performance",
+        "required_semantic_roles": [
+          "category_like"
+        ],
+        "formula": {
+          "operation": "GROUP_COUNT",
+          "fields": [
+            "category_like"
+          ]
+        },
+        "aggregation": "DISTRIBUTION",
+        "confidence": 1.0,
+        "generator_plugin": "category_plugin",
+        "explanation": "Groups transaction volumes by category headers.",
+        "dependencies": [],
+        "rank": 9,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "category_share",
+        "display_name": "Category Share",
+        "required_semantic_roles": [
+          "category_like"
+        ],
+        "formula": {
+          "operation": "GROUP_PERCENT",
+          "fields": [
+            "category_like"
+          ]
+        },
+        "aggregation": "RATIO",
+        "confidence": 1.0,
+        "generator_plugin": "category_plugin",
+        "explanation": "Computes proportion percentage of total count per category label.",
+        "dependencies": [
+          "category_performance"
+        ],
+        "rank": 10,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      }
+    ]
+  },
+  "4298834ab4d9d60abf51215cdf27107804509a9320e22adca9065c0e9f8deeca": {
+    "selected_kpis": [
+      {
+        "id": "total_revenue",
+        "display_name": "Total Sales Revenue",
+        "required_semantic_roles": [
+          "revenue_like"
+        ],
+        "formula": {
+          "operation": "SUM",
+          "fields": [
+            "revenue_like"
+          ]
+        },
+        "aggregation": "SUM",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates the sum of all transaction revenue fields.",
+        "dependencies": [],
+        "rank": 1,
+        "importance": 0.98,
+        "reason": "Primary top-line metric.",
+        "selected": true
+      },
+      {
+        "id": "average_revenue",
+        "display_name": "Average Revenue",
+        "required_semantic_roles": [
+          "revenue_like"
+        ],
+        "formula": {
+          "operation": "AVG",
+          "fields": [
+            "revenue_like"
+          ]
+        },
+        "aggregation": "AVG",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates the average transaction value of revenue fields.",
+        "dependencies": [],
+        "rank": 2,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "revenue_distribution",
+        "display_name": "Revenue Distribution",
+        "required_semantic_roles": [
+          "revenue_like"
+        ],
+        "formula": {
+          "operation": "DISTRIBUTION",
+          "fields": [
+            "revenue_like"
+          ]
+        },
+        "aggregation": "DISTRIBUTION",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Renders transaction counts across dynamic revenue brackets.",
+        "dependencies": [],
+        "rank": 3,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "revenue_trend",
+        "display_name": "Revenue Trend",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "GROUP_TREND",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "TREND",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Monitors total revenue shifts over date records.",
+        "dependencies": [
+          "total_revenue"
+        ],
+        "rank": 4,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "revenue_growth_rate",
+        "display_name": "Revenue Growth Rate",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "PERIOD_GROWTH",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "RATE",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Computes period-over-period growth rate of revenue.",
+        "dependencies": [
+          "revenue_trend"
+        ],
+        "rank": 5,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "monthly_revenue",
+        "display_name": "Monthly Revenue",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "GROUP_MONTH",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "SUM",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Aggregates revenue values grouped by month.",
+        "dependencies": [
+          "total_revenue"
+        ],
+        "rank": 6,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "weekly_revenue",
+        "display_name": "Weekly Revenue",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "GROUP_WEEK",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "SUM",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Aggregates revenue values grouped by ISO week.",
+        "dependencies": [
+          "total_revenue"
+        ],
+        "rank": 7,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "rolling_revenue",
+        "display_name": "Rolling Revenue",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "ROLLING_SUM",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "TREND",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates 7-record rolling total of sales revenue.",
+        "dependencies": [
+          "total_revenue"
+        ],
+        "rank": 8,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "category_performance",
+        "display_name": "Category Performance",
+        "required_semantic_roles": [
+          "category_like"
+        ],
+        "formula": {
+          "operation": "GROUP_COUNT",
+          "fields": [
+            "category_like"
+          ]
+        },
+        "aggregation": "DISTRIBUTION",
+        "confidence": 1.0,
+        "generator_plugin": "category_plugin",
+        "explanation": "Groups transaction volumes by category headers.",
+        "dependencies": [],
+        "rank": 9,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "category_share",
+        "display_name": "Category Share",
+        "required_semantic_roles": [
+          "category_like"
+        ],
+        "formula": {
+          "operation": "GROUP_PERCENT",
+          "fields": [
+            "category_like"
+          ]
+        },
+        "aggregation": "RATIO",
+        "confidence": 1.0,
+        "generator_plugin": "category_plugin",
+        "explanation": "Computes proportion percentage of total count per category label.",
+        "dependencies": [
+          "category_performance"
+        ],
+        "rank": 10,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      }
+    ]
+  },
+  "5a8e76f6bdd16ecb26c18c5ab76c3c9a59cb9f67c2d23b184169f2631fbefedc": {
+    "selected_kpis": [
+      {
+        "id": "total_revenue",
+        "display_name": "Total Sales Revenue",
+        "required_semantic_roles": [
+          "revenue_like"
+        ],
+        "formula": {
+          "operation": "SUM",
+          "fields": [
+            "revenue_like"
+          ]
+        },
+        "aggregation": "SUM",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates the sum of all transaction revenue fields.",
+        "dependencies": [],
+        "rank": 1,
+        "importance": 0.98,
+        "reason": "Primary top-line metric.",
+        "selected": true
+      },
+      {
+        "id": "average_revenue",
+        "display_name": "Average Revenue",
+        "required_semantic_roles": [
+          "revenue_like"
+        ],
+        "formula": {
+          "operation": "AVG",
+          "fields": [
+            "revenue_like"
+          ]
+        },
+        "aggregation": "AVG",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates the average transaction value of revenue fields.",
+        "dependencies": [],
+        "rank": 2,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "revenue_distribution",
+        "display_name": "Revenue Distribution",
+        "required_semantic_roles": [
+          "revenue_like"
+        ],
+        "formula": {
+          "operation": "DISTRIBUTION",
+          "fields": [
+            "revenue_like"
+          ]
+        },
+        "aggregation": "DISTRIBUTION",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Renders transaction counts across dynamic revenue brackets.",
+        "dependencies": [],
+        "rank": 3,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "revenue_trend",
+        "display_name": "Revenue Trend",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "GROUP_TREND",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "TREND",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Monitors total revenue shifts over date records.",
+        "dependencies": [
+          "total_revenue"
+        ],
+        "rank": 4,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "revenue_growth_rate",
+        "display_name": "Revenue Growth Rate",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "PERIOD_GROWTH",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "RATE",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Computes period-over-period growth rate of revenue.",
+        "dependencies": [
+          "revenue_trend"
+        ],
+        "rank": 5,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "monthly_revenue",
+        "display_name": "Monthly Revenue",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "GROUP_MONTH",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "SUM",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Aggregates revenue values grouped by month.",
+        "dependencies": [
+          "total_revenue"
+        ],
+        "rank": 6,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "weekly_revenue",
+        "display_name": "Weekly Revenue",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "GROUP_WEEK",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "SUM",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Aggregates revenue values grouped by ISO week.",
+        "dependencies": [
+          "total_revenue"
+        ],
+        "rank": 7,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "rolling_revenue",
+        "display_name": "Rolling Revenue",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "ROLLING_SUM",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "TREND",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates 7-record rolling total of sales revenue.",
+        "dependencies": [
+          "total_revenue"
+        ],
+        "rank": 8,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "category_performance",
+        "display_name": "Category Performance",
+        "required_semantic_roles": [
+          "category_like"
+        ],
+        "formula": {
+          "operation": "GROUP_COUNT",
+          "fields": [
+            "category_like"
+          ]
+        },
+        "aggregation": "DISTRIBUTION",
+        "confidence": 1.0,
+        "generator_plugin": "category_plugin",
+        "explanation": "Groups transaction volumes by category headers.",
+        "dependencies": [],
+        "rank": 9,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "category_share",
+        "display_name": "Category Share",
+        "required_semantic_roles": [
+          "category_like"
+        ],
+        "formula": {
+          "operation": "GROUP_PERCENT",
+          "fields": [
+            "category_like"
+          ]
+        },
+        "aggregation": "RATIO",
+        "confidence": 1.0,
+        "generator_plugin": "category_plugin",
+        "explanation": "Computes proportion percentage of total count per category label.",
+        "dependencies": [
+          "category_performance"
+        ],
+        "rank": 10,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      }
+    ]
+  },
+  "b361ed78c9b0f7cc854da6deab17ca6943eea849eca408984841c83a6fec2029": {
+    "selected_kpis": [
+      {
+        "id": "total_revenue",
+        "display_name": "Total Sales Revenue",
+        "required_semantic_roles": [
+          "revenue_like"
+        ],
+        "formula": {
+          "operation": "SUM",
+          "fields": [
+            "revenue_like"
+          ]
+        },
+        "aggregation": "SUM",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates the sum of all transaction revenue fields.",
+        "dependencies": [],
+        "rank": 1,
+        "importance": 0.98,
+        "reason": "Primary top-line metric.",
+        "selected": true
+      },
+      {
+        "id": "average_revenue",
+        "display_name": "Average Revenue",
+        "required_semantic_roles": [
+          "revenue_like"
+        ],
+        "formula": {
+          "operation": "AVG",
+          "fields": [
+            "revenue_like"
+          ]
+        },
+        "aggregation": "AVG",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates the average transaction value of revenue fields.",
+        "dependencies": [],
+        "rank": 2,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "revenue_distribution",
+        "display_name": "Revenue Distribution",
+        "required_semantic_roles": [
+          "revenue_like"
+        ],
+        "formula": {
+          "operation": "DISTRIBUTION",
+          "fields": [
+            "revenue_like"
+          ]
+        },
+        "aggregation": "DISTRIBUTION",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Renders transaction counts across dynamic revenue brackets.",
+        "dependencies": [],
+        "rank": 3,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "revenue_trend",
+        "display_name": "Revenue Trend",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "GROUP_TREND",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "TREND",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Monitors total revenue shifts over date records.",
+        "dependencies": [
+          "total_revenue"
+        ],
+        "rank": 4,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "revenue_growth_rate",
+        "display_name": "Revenue Growth Rate",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "PERIOD_GROWTH",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "RATE",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Computes period-over-period growth rate of revenue.",
+        "dependencies": [
+          "revenue_trend"
+        ],
+        "rank": 5,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "monthly_revenue",
+        "display_name": "Monthly Revenue",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "GROUP_MONTH",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "SUM",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Aggregates revenue values grouped by month.",
+        "dependencies": [
+          "total_revenue"
+        ],
+        "rank": 6,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "weekly_revenue",
+        "display_name": "Weekly Revenue",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "GROUP_WEEK",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "SUM",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Aggregates revenue values grouped by ISO week.",
+        "dependencies": [
+          "total_revenue"
+        ],
+        "rank": 7,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "rolling_revenue",
+        "display_name": "Rolling Revenue",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "ROLLING_SUM",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "TREND",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates 7-record rolling total of sales revenue.",
+        "dependencies": [
+          "total_revenue"
+        ],
+        "rank": 8,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      }
+    ]
+  },
+  "3c7fe33842ba9a4d396cd3e06109f5a511f1330d66456894e8aa16f69763da3d": {
+    "selected_kpis": [
+      {
+        "id": "total_revenue",
+        "display_name": "Total Sales Revenue",
+        "required_semantic_roles": [
+          "revenue_like"
+        ],
+        "formula": {
+          "operation": "SUM",
+          "fields": [
+            "revenue_like"
+          ]
+        },
+        "aggregation": "SUM",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates the sum of all transaction revenue fields.",
+        "dependencies": [],
+        "rank": 1,
+        "importance": 0.98,
+        "reason": "Primary top-line metric.",
+        "selected": true
+      },
+      {
+        "id": "average_revenue",
+        "display_name": "Average Revenue",
+        "required_semantic_roles": [
+          "revenue_like"
+        ],
+        "formula": {
+          "operation": "AVG",
+          "fields": [
+            "revenue_like"
+          ]
+        },
+        "aggregation": "AVG",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates the average transaction value of revenue fields.",
+        "dependencies": [],
+        "rank": 2,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "revenue_distribution",
+        "display_name": "Revenue Distribution",
+        "required_semantic_roles": [
+          "revenue_like"
+        ],
+        "formula": {
+          "operation": "DISTRIBUTION",
+          "fields": [
+            "revenue_like"
+          ]
+        },
+        "aggregation": "DISTRIBUTION",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Renders transaction counts across dynamic revenue brackets.",
+        "dependencies": [],
+        "rank": 3,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "revenue_trend",
+        "display_name": "Revenue Trend",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "GROUP_TREND",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "TREND",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Monitors total revenue shifts over date records.",
+        "dependencies": [
+          "total_revenue"
+        ],
+        "rank": 4,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "revenue_growth_rate",
+        "display_name": "Revenue Growth Rate",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "PERIOD_GROWTH",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "RATE",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Computes period-over-period growth rate of revenue.",
+        "dependencies": [
+          "revenue_trend"
+        ],
+        "rank": 5,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "monthly_revenue",
+        "display_name": "Monthly Revenue",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "GROUP_MONTH",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "SUM",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Aggregates revenue values grouped by month.",
+        "dependencies": [
+          "total_revenue"
+        ],
+        "rank": 6,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "weekly_revenue",
+        "display_name": "Weekly Revenue",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "GROUP_WEEK",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "SUM",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Aggregates revenue values grouped by ISO week.",
+        "dependencies": [
+          "total_revenue"
+        ],
+        "rank": 7,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "rolling_revenue",
+        "display_name": "Rolling Revenue",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "ROLLING_SUM",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "TREND",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates 7-record rolling total of sales revenue.",
+        "dependencies": [
+          "total_revenue"
+        ],
+        "rank": 8,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "category_performance",
+        "display_name": "Category Performance",
+        "required_semantic_roles": [
+          "category_like"
+        ],
+        "formula": {
+          "operation": "GROUP_COUNT",
+          "fields": [
+            "category_like"
+          ]
+        },
+        "aggregation": "DISTRIBUTION",
+        "confidence": 1.0,
+        "generator_plugin": "category_plugin",
+        "explanation": "Groups transaction volumes by category headers.",
+        "dependencies": [],
+        "rank": 9,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "category_share",
+        "display_name": "Category Share",
+        "required_semantic_roles": [
+          "category_like"
+        ],
+        "formula": {
+          "operation": "GROUP_PERCENT",
+          "fields": [
+            "category_like"
+          ]
+        },
+        "aggregation": "RATIO",
+        "confidence": 1.0,
+        "generator_plugin": "category_plugin",
+        "explanation": "Computes proportion percentage of total count per category label.",
+        "dependencies": [
+          "category_performance"
+        ],
+        "rank": 10,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      }
+    ]
+  },
+  "9b7d7a4b781078c846eda4e80f2c1798c630d1440be345040bc341be40ab508b": {
+    "selected_kpis": [
+      {
+        "id": "total_revenue",
+        "display_name": "Total Sales Revenue",
+        "required_semantic_roles": [
+          "revenue_like"
+        ],
+        "formula": {
+          "operation": "SUM",
+          "fields": [
+            "revenue_like"
+          ]
+        },
+        "aggregation": "SUM",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates the sum of all transaction revenue fields.",
+        "dependencies": [],
+        "rank": 1,
+        "importance": 0.98,
+        "reason": "Primary top-line metric.",
+        "selected": true
+      },
+      {
+        "id": "average_revenue",
+        "display_name": "Average Revenue",
+        "required_semantic_roles": [
+          "revenue_like"
+        ],
+        "formula": {
+          "operation": "AVG",
+          "fields": [
+            "revenue_like"
+          ]
+        },
+        "aggregation": "AVG",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates the average transaction value of revenue fields.",
+        "dependencies": [],
+        "rank": 2,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "revenue_distribution",
+        "display_name": "Revenue Distribution",
+        "required_semantic_roles": [
+          "revenue_like"
+        ],
+        "formula": {
+          "operation": "DISTRIBUTION",
+          "fields": [
+            "revenue_like"
+          ]
+        },
+        "aggregation": "DISTRIBUTION",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Renders transaction counts across dynamic revenue brackets.",
+        "dependencies": [],
+        "rank": 3,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "revenue_trend",
+        "display_name": "Revenue Trend",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "GROUP_TREND",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "TREND",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Monitors total revenue shifts over date records.",
+        "dependencies": [
+          "total_revenue"
+        ],
+        "rank": 4,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "revenue_growth_rate",
+        "display_name": "Revenue Growth Rate",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "PERIOD_GROWTH",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "RATE",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Computes period-over-period growth rate of revenue.",
+        "dependencies": [
+          "revenue_trend"
+        ],
+        "rank": 5,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "monthly_revenue",
+        "display_name": "Monthly Revenue",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "GROUP_MONTH",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "SUM",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Aggregates revenue values grouped by month.",
+        "dependencies": [
+          "total_revenue"
+        ],
+        "rank": 6,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "weekly_revenue",
+        "display_name": "Weekly Revenue",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "GROUP_WEEK",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "SUM",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Aggregates revenue values grouped by ISO week.",
+        "dependencies": [
+          "total_revenue"
+        ],
+        "rank": 7,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "rolling_revenue",
+        "display_name": "Rolling Revenue",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "ROLLING_SUM",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "TREND",
+        "confidence": 1.0,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates 7-record rolling total of sales revenue.",
+        "dependencies": [
+          "total_revenue"
+        ],
+        "rank": 8,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "category_performance",
+        "display_name": "Category Performance",
+        "required_semantic_roles": [
+          "category_like"
+        ],
+        "formula": {
+          "operation": "GROUP_COUNT",
+          "fields": [
+            "category_like"
+          ]
+        },
+        "aggregation": "DISTRIBUTION",
+        "confidence": 1.0,
+        "generator_plugin": "category_plugin",
+        "explanation": "Groups transaction volumes by category headers.",
+        "dependencies": [],
+        "rank": 9,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "category_share",
+        "display_name": "Category Share",
+        "required_semantic_roles": [
+          "category_like"
+        ],
+        "formula": {
+          "operation": "GROUP_PERCENT",
+          "fields": [
+            "category_like"
+          ]
+        },
+        "aggregation": "RATIO",
+        "confidence": 1.0,
+        "generator_plugin": "category_plugin",
+        "explanation": "Computes proportion percentage of total count per category label.",
+        "dependencies": [
+          "category_performance"
+        ],
+        "rank": 10,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      }
+    ]
+  },
+  "76304b7b4bce40f68ae4bcd79869286740ee4097f60dfead396bb4f1d2eb7013": {
+    "selected_kpis": [
+      {
+        "id": "total_revenue",
+        "display_name": "Total Revenue",
+        "required_semantic_roles": [
+          "revenue_like"
+        ],
+        "formula": {
+          "operation": "SUM",
+          "fields": [
+            "revenue_like"
+          ]
+        },
+        "aggregation": "SUM",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates the sum of all transaction revenue fields.",
+        "dependencies": [],
+        "rank": 1,
+        "importance": 1.0,
+        "reason": "Fundamental measure of overall business performance and sales volume, crucial for quick commerce success.",
+        "selected": true
+      },
+      {
+        "id": "sla_compliance",
+        "display_name": "SLA Compliance Rate (Delivery)",
+        "required_semantic_roles": [
+          "duration_like"
+        ],
+        "formula": {
+          "operation": "PERCENT_BELOW",
+          "fields": [
+            "duration_like"
+          ],
+          "threshold": 30
+        },
+        "aggregation": "RATE",
+        "confidence": 1,
+        "generator_plugin": "duration_plugin",
+        "explanation": "Computes proportion of transactions satisfying target SLA duration (30 mins).",
+        "dependencies": [],
+        "rank": 2,
+        "importance": 0.98,
+        "reason": "Directly measures the ability to meet promised delivery times, a key differentiator and customer satisfaction driver in quick commerce.",
+        "selected": true
+      },
+      {
+        "id": "gross_profit",
+        "display_name": "Gross Profit",
+        "required_semantic_roles": [
+          "revenue_like",
+          "cost_like"
+        ],
+        "formula": {
+          "operation": "SUBTRACT",
+          "fields": [
+            "revenue_like",
+            "cost_like"
+          ]
+        },
+        "aggregation": "SUM",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Derived as total revenue minus total cost.",
+        "dependencies": [
+          "total_revenue",
+          "total_cost"
+        ],
+        "rank": 3,
+        "importance": 0.95,
+        "reason": "Key indicator of financial health, showing profitability before overheads, vital for sustainable growth.",
+        "selected": true
+      },
+      {
+        "id": "total_cost",
+        "display_name": "Total Operational Cost",
+        "required_semantic_roles": [
+          "cost_like"
+        ],
+        "formula": {
+          "operation": "SUM",
+          "fields": [
+            "cost_like"
+          ]
+        },
+        "aggregation": "SUM",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates the sum of all operational cost fields.",
+        "dependencies": [],
+        "rank": 4,
+        "importance": 0.92,
+        "reason": "Crucial for understanding overall expenses and managing operational efficiency in a high-volume, fast-paced environment.",
+        "selected": true
+      },
+      {
+        "id": "average_duration",
+        "display_name": "Average Delivery Duration",
+        "required_semantic_roles": [
+          "duration_like"
+        ],
+        "formula": {
+          "operation": "AVG",
+          "fields": [
+            "duration_like"
+          ]
+        },
+        "aggregation": "AVG",
+        "confidence": 1,
+        "generator_plugin": "duration_plugin",
+        "explanation": "Measures average operation time duration.",
+        "dependencies": [],
+        "rank": 5,
+        "importance": 0.9,
+        "reason": "Critical for quick commerce to measure and optimize delivery speed, directly impacting customer satisfaction and repeat business.",
+        "selected": true
+      },
+      {
+        "id": "profit_margin",
+        "display_name": "Profit Margin",
+        "required_semantic_roles": [
+          "revenue_like",
+          "cost_like"
+        ],
+        "formula": {
+          "operation": "RATIO_PERCENT",
+          "fields": [
+            "gross_profit",
+            "revenue_like"
+          ]
+        },
+        "aggregation": "RATE",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Profit margin percentage calculated from profit and revenue.",
+        "dependencies": [
+          "gross_profit",
+          "total_revenue"
+        ],
+        "rank": 6,
+        "importance": 0.88,
+        "reason": "Measures how much profit is generated per dollar of revenue, indicating operational efficiency and pricing effectiveness.",
+        "selected": true
+      },
+      {
+        "id": "duration_distribution",
+        "display_name": "Delivery Duration Distribution",
+        "required_semantic_roles": [
+          "duration_like"
+        ],
+        "formula": {
+          "operation": "DISTRIBUTION",
+          "fields": [
+            "duration_like"
+          ]
+        },
+        "aggregation": "DISTRIBUTION",
+        "confidence": 1,
+        "generator_plugin": "duration_plugin",
+        "explanation": "Renders transaction volumes mapped to dynamic time bins.",
+        "dependencies": [],
+        "rank": 7,
+        "importance": 0.85,
+        "reason": "Helps understand the consistency and variability of delivery times, identifying bottlenecks or areas for improvement in logistics.",
+        "selected": true
+      },
+      {
+        "id": "average_order_value",
+        "display_name": "Average Order Value",
+        "required_semantic_roles": [
+          "revenue_like",
+          "quantity_like"
+        ],
+        "formula": {
+          "operation": "RATIO",
+          "fields": [
+            "revenue_like",
+            "quantity_like"
+          ]
+        },
+        "aggregation": "RATIO",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Measures transaction value divided by purchased units.",
+        "dependencies": [],
+        "rank": 8,
+        "importance": 0.82,
+        "reason": "Essential for understanding customer spending and optimizing pricing and promotional strategies to maximize basket size.",
+        "selected": true
+      },
+      {
+        "id": "revenue_trend",
+        "display_name": "Revenue Trend",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "GROUP_TREND",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "TREND",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Monitors total revenue shifts over date records.",
+        "dependencies": [
+          "total_revenue"
+        ],
+        "rank": 9,
+        "importance": 0.8,
+        "reason": "Essential for tracking business growth, seasonality, and the impact of initiatives over time in a dynamic market.",
+        "selected": true
+      },
+      {
+        "id": "revenue_growth_rate",
+        "display_name": "Revenue Growth Rate",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "PERIOD_GROWTH",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "RATE",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Computes period-over-period growth rate of revenue.",
+        "dependencies": [
+          "revenue_trend"
+        ],
+        "rank": 10,
+        "importance": 0.78,
+        "reason": "Indicates the pace of business expansion and effectiveness of growth strategies, vital for investor relations and strategic planning.",
+        "selected": true
+      },
+      {
+        "id": "weekly_revenue",
+        "display_name": "Weekly Revenue",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "GROUP_WEEK",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "SUM",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Aggregates revenue values grouped by ISO week.",
+        "dependencies": [
+          "total_revenue"
+        ],
+        "rank": 11,
+        "importance": 0.75,
+        "reason": "Offers granular insights into short-term performance and immediate impact of promotions or events, crucial for agile operations.",
+        "selected": true
+      },
+      {
+        "id": "repeat_customer_rate",
+        "display_name": "Repeat Customer Rate",
+        "required_semantic_roles": [
+          "customer_id_like"
+        ],
+        "formula": {
+          "operation": "RATIO_PERCENT",
+          "fields": [
+            "repeat_customers",
+            "total_customers"
+          ]
+        },
+        "aggregation": "RATE",
+        "confidence": 1,
+        "generator_plugin": "customer_loyalty_plugin",
+        "explanation": "Percentage of unique customers with multiple transaction occurrences.",
+        "dependencies": [
+          "customer_count"
+        ],
+        "rank": 12,
+        "importance": 0.72,
+        "reason": "Crucial for assessing customer loyalty and the effectiveness of retention strategies in a competitive quick commerce market.",
+        "selected": true
+      },
+      {
+        "id": "category_performance",
+        "display_name": "Product Category Performance",
+        "required_semantic_roles": [
+          "category_like"
+        ],
+        "formula": {
+          "operation": "GROUP_COUNT",
+          "fields": [
+            "category_like"
+          ]
+        },
+        "aggregation": "DISTRIBUTION",
+        "confidence": 1,
+        "generator_plugin": "category_plugin",
+        "explanation": "Groups transaction volumes by category headers.",
+        "dependencies": [],
+        "rank": 13,
+        "importance": 0.7,
+        "reason": "Helps identify best-selling product categories, guiding inventory management, merchandising, and procurement decisions.",
+        "selected": true
+      },
+      {
+        "id": "regional_performance",
+        "display_name": "Regional Sales Performance",
+        "required_semantic_roles": [
+          "location_like"
+        ],
+        "formula": {
+          "operation": "GROUP_COUNT",
+          "fields": [
+            "location_like"
+          ]
+        },
+        "aggregation": "DISTRIBUTION",
+        "confidence": 1,
+        "generator_plugin": "location_plugin",
+        "explanation": "Segments transaction volumes by locations.",
+        "dependencies": [],
+        "rank": 14,
+        "importance": 0.68,
+        "reason": "Essential for understanding geographical strengths and weaknesses, informing localized marketing and operational strategies.",
+        "selected": true
+      },
+      {
+        "id": "category_share",
+        "display_name": "Product Category Revenue Share",
+        "required_semantic_roles": [
+          "category_like"
+        ],
+        "formula": {
+          "operation": "GROUP_PERCENT",
+          "fields": [
+            "category_like"
+          ]
+        },
+        "aggregation": "RATIO",
+        "confidence": 1,
+        "generator_plugin": "category_plugin",
+        "explanation": "Computes proportion percentage of total count per category label.",
+        "dependencies": [
+          "category_performance"
+        ],
+        "rank": 15,
+        "importance": 0.65,
+        "reason": "Shows the proportional contribution of each product category to overall revenue, useful for portfolio analysis and strategic focus.",
+        "selected": true
+      },
+      {
+        "id": "rolling_revenue",
+        "display_name": "Rolling 7-Day Revenue",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "ROLLING_SUM",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "TREND",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates 7-record rolling total of sales revenue.",
+        "dependencies": [
+          "total_revenue"
+        ],
+        "rank": 16,
+        "importance": 0.62,
+        "reason": "Helps in identifying underlying revenue trends by smoothing out daily variations and noise, providing a clearer picture of short-term momentum.",
+        "selected": true
+      },
+      {
+        "id": "monthly_revenue",
+        "display_name": "Monthly Revenue",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "GROUP_MONTH",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "SUM",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Aggregates revenue values grouped by month.",
+        "dependencies": [
+          "total_revenue"
+        ],
+        "rank": 17,
+        "importance": 0.6,
+        "reason": "Provides a clear view of revenue performance on a monthly basis, useful for financial reporting, budgeting, and long-term planning.",
+        "selected": true
+      },
+      {
+        "id": "customer_count",
+        "display_name": "Total Customer Count",
+        "required_semantic_roles": [
+          "customer_id_like"
+        ],
+        "formula": {
+          "operation": "DISTINCT_COUNT",
+          "fields": [
+            "customer_id_like"
+          ]
+        },
+        "aggregation": "COUNT",
+        "confidence": 1,
+        "generator_plugin": "customer_loyalty_plugin",
+        "explanation": "Counts unique customer identifiers.",
+        "dependencies": [],
+        "rank": 18,
+        "importance": 0.58,
+        "reason": "Measures the size of the customer base, indicating market reach and the success of customer acquisition efforts.",
+        "selected": true
+      },
+      {
+        "id": "top_locations",
+        "display_name": "Top Performing Locations",
+        "required_semantic_roles": [
+          "location_like"
+        ],
+        "formula": {
+          "operation": "GROUP_SORT_LIMIT",
+          "fields": [
+            "location_like"
+          ]
+        },
+        "aggregation": "DISTRIBUTION",
+        "confidence": 1,
+        "generator_plugin": "location_plugin",
+        "explanation": "Sorts and lists the highest volume locations.",
+        "dependencies": [
+          "regional_performance"
+        ],
+        "rank": 19,
+        "importance": 0.55,
+        "reason": "Pinpoints high-performing areas, allowing for targeted resource allocation, marketing campaigns, and potential expansion efforts.",
+        "selected": true
+      },
+      {
+        "id": "customer_frequency",
+        "display_name": "Customer Order Frequency",
+        "required_semantic_roles": [
+          "customer_id_like"
+        ],
+        "formula": {
+          "operation": "AVG_COUNT",
+          "fields": [
+            "customer_id_like"
+          ]
+        },
+        "aggregation": "AVG",
+        "confidence": 1,
+        "generator_plugin": "customer_loyalty_plugin",
+        "explanation": "Measures the average number of transaction records per customer.",
+        "dependencies": [],
+        "rank": 20,
+        "importance": 0.52,
+        "reason": "Provides insights into how often customers make purchases, indicating engagement and loyalty, and potential for increasing lifetime value.",
+        "selected": true
+      },
+      {
+        "id": "cost_ratio",
+        "display_name": "Cost-to-Revenue Ratio",
+        "required_semantic_roles": [
+          "revenue_like",
+          "cost_like"
+        ],
+        "formula": {
+          "operation": "RATIO",
+          "fields": [
+            "cost_like",
+            "revenue_like"
+          ]
+        },
+        "aggregation": "RATIO",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Measures total cost divided by total revenue.",
+        "dependencies": [
+          "total_cost",
+          "total_revenue"
+        ],
+        "rank": 21,
+        "importance": 0.5,
+        "reason": "Shows the proportion of revenue consumed by costs, highlighting efficiency and areas where cost optimization may be needed.",
+        "selected": true
+      },
+      {
+        "id": "average_cost",
+        "display_name": "Average Cost Per Order",
+        "required_semantic_roles": [
+          "cost_like"
+        ],
+        "formula": {
+          "operation": "AVG",
+          "fields": [
+            "cost_like"
+          ]
+        },
+        "aggregation": "AVG",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates the average operational cost value.",
+        "dependencies": [],
+        "rank": 22,
+        "importance": 0.48,
+        "reason": "Helps in identifying cost-saving opportunities on a per-order basis, contributing to overall profitability.",
+        "selected": true
+      },
+      {
+        "id": "revenue_distribution",
+        "display_name": "Order Value Distribution",
+        "required_semantic_roles": [
+          "revenue_like"
+        ],
+        "formula": {
+          "operation": "DISTRIBUTION",
+          "fields": [
+            "revenue_like"
+          ]
+        },
+        "aggregation": "DISTRIBUTION",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Renders transaction counts across dynamic revenue brackets.",
+        "dependencies": [],
+        "rank": 23,
+        "importance": 0.45,
+        "reason": "Provides insights into the spread of order values, identifying common transaction sizes and potential for upselling.",
+        "selected": true
+      },
+      {
+        "id": "average_revenue",
+        "display_name": "Average Revenue",
+        "required_semantic_roles": [
+          "revenue_like"
+        ],
+        "formula": {
+          "operation": "AVG",
+          "fields": [
+            "revenue_like"
+          ]
+        },
+        "aggregation": "AVG",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates the average transaction value of revenue fields.",
+        "dependencies": [],
+        "rank": 24,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "revenue_per_unit",
+        "display_name": "Revenue per Unit",
+        "required_semantic_roles": [
+          "revenue_like",
+          "quantity_like"
+        ],
+        "formula": {
+          "operation": "RATIO",
+          "fields": [
+            "revenue_like",
+            "quantity_like"
+          ]
+        },
+        "aggregation": "RATIO",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates revenue generated per unit sold.",
+        "dependencies": [],
+        "rank": 25,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      }
+    ]
+  },
+  "946bb882f97ddce7cf2034c99a78e23e9dfb896edbf93544a19c50d58e8daeed": {
+    "selected_kpis": [
+      {
+        "id": "sla_compliance",
+        "display_name": "SLA Compliance Rate",
+        "required_semantic_roles": [
+          "duration_like"
+        ],
+        "formula": {
+          "operation": "PERCENT_BELOW",
+          "fields": [
+            "duration_like"
+          ],
+          "threshold": 30
+        },
+        "aggregation": "RATE",
+        "confidence": 1,
+        "generator_plugin": "duration_plugin",
+        "explanation": "Computes proportion of transactions satisfying target SLA duration (30 mins).",
+        "dependencies": [],
+        "rank": 1,
+        "importance": 1.0,
+        "reason": "Directly measures the core promise of 'quick' commerce, ensuring timely deliveries and customer satisfaction.",
+        "selected": true
+      },
+      {
+        "id": "average_duration",
+        "display_name": "Average Order Fulfillment Time",
+        "required_semantic_roles": [
+          "duration_like"
+        ],
+        "formula": {
+          "operation": "AVG",
+          "fields": [
+            "duration_like"
+          ]
+        },
+        "aggregation": "AVG",
+        "confidence": 1,
+        "generator_plugin": "duration_plugin",
+        "explanation": "Measures average operation time duration.",
+        "dependencies": [],
+        "rank": 2,
+        "importance": 0.98,
+        "reason": "A critical operational metric reflecting the speed of service, directly impacting customer experience in quick commerce.",
+        "selected": true
+      },
+      {
+        "id": "gross_profit",
+        "display_name": "Gross Profit",
+        "required_semantic_roles": [
+          "revenue_like",
+          "cost_like"
+        ],
+        "formula": {
+          "operation": "SUBTRACT",
+          "fields": [
+            "revenue_like",
+            "cost_like"
+          ]
+        },
+        "aggregation": "SUM",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Derived as total revenue minus total cost.",
+        "dependencies": [
+          "total_revenue",
+          "total_cost"
+        ],
+        "rank": 3,
+        "importance": 0.95,
+        "reason": "Fundamental measure of financial health, indicating the profitability of sales after direct costs.",
+        "selected": true
+      },
+      {
+        "id": "profit_margin",
+        "display_name": "Profit Margin",
+        "required_semantic_roles": [
+          "revenue_like",
+          "cost_like"
+        ],
+        "formula": {
+          "operation": "RATIO_PERCENT",
+          "fields": [
+            "gross_profit",
+            "revenue_like"
+          ]
+        },
+        "aggregation": "RATE",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Profit margin percentage calculated from profit and revenue.",
+        "dependencies": [
+          "gross_profit",
+          "total_revenue"
+        ],
+        "rank": 4,
+        "importance": 0.93,
+        "reason": "Key indicator of operational efficiency and the business's ability to convert revenue into profit.",
+        "selected": true
+      },
+      {
+        "id": "average_order_value",
+        "display_name": "Average Order Value",
+        "required_semantic_roles": [
+          "revenue_like",
+          "quantity_like"
+        ],
+        "formula": {
+          "operation": "RATIO",
+          "fields": [
+            "revenue_like",
+            "quantity_like"
+          ]
+        },
+        "aggregation": "RATIO",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Measures transaction value divided by purchased units.",
+        "dependencies": [],
+        "rank": 5,
+        "importance": 0.92,
+        "reason": "Crucial for understanding transaction economics and customer spending habits, vital for pricing and promotions.",
+        "selected": true
+      },
+      {
+        "id": "total_revenue",
+        "display_name": "Total Revenue",
+        "required_semantic_roles": [
+          "revenue_like"
+        ],
+        "formula": {
+          "operation": "SUM",
+          "fields": [
+            "revenue_like"
+          ]
+        },
+        "aggregation": "SUM",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates the sum of all transaction revenue fields.",
+        "dependencies": [],
+        "rank": 6,
+        "importance": 0.9,
+        "reason": "The primary indicator of overall business scale and financial performance.",
+        "selected": true
+      },
+      {
+        "id": "repeat_customer_rate",
+        "display_name": "Repeat Customer Rate",
+        "required_semantic_roles": [
+          "customer_id_like"
+        ],
+        "formula": {
+          "operation": "RATIO_PERCENT",
+          "fields": [
+            "repeat_customers",
+            "total_customers"
+          ]
+        },
+        "aggregation": "RATE",
+        "confidence": 1,
+        "generator_plugin": "customer_loyalty_plugin",
+        "explanation": "Percentage of unique customers with multiple transaction occurrences.",
+        "dependencies": [
+          "customer_count"
+        ],
+        "rank": 7,
+        "importance": 0.88,
+        "reason": "Essential for long-term growth and customer lifetime value in a high-frequency business model.",
+        "selected": true
+      },
+      {
+        "id": "revenue_growth_rate",
+        "display_name": "Revenue Growth Rate",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "PERIOD_GROWTH",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "RATE",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Computes period-over-period growth rate of revenue.",
+        "dependencies": [
+          "revenue_trend"
+        ],
+        "rank": 8,
+        "importance": 0.85,
+        "reason": "Measures the pace of business expansion and market penetration, indicating dynamic performance.",
+        "selected": true
+      },
+      {
+        "id": "total_cost",
+        "display_name": "Total Cost",
+        "required_semantic_roles": [
+          "cost_like"
+        ],
+        "formula": {
+          "operation": "SUM",
+          "fields": [
+            "cost_like"
+          ]
+        },
+        "aggregation": "SUM",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates the sum of all operational cost fields.",
+        "dependencies": [],
+        "rank": 9,
+        "importance": 0.83,
+        "reason": "Essential for managing expenses and understanding the true drivers of profitability.",
+        "selected": true
+      },
+      {
+        "id": "customer_frequency",
+        "display_name": "Customer Frequency",
+        "required_semantic_roles": [
+          "customer_id_like"
+        ],
+        "formula": {
+          "operation": "AVG_COUNT",
+          "fields": [
+            "customer_id_like"
+          ]
+        },
+        "aggregation": "AVG",
+        "confidence": 1,
+        "generator_plugin": "customer_loyalty_plugin",
+        "explanation": "Measures the average number of transaction records per customer.",
+        "dependencies": [],
+        "rank": 10,
+        "importance": 0.8,
+        "reason": "Indicates customer engagement and loyalty, crucial for predicting future demand.",
+        "selected": true
+      },
+      {
+        "id": "revenue_trend",
+        "display_name": "Revenue Trend",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "GROUP_TREND",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "TREND",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Monitors total revenue shifts over date records.",
+        "dependencies": [
+          "total_revenue"
+        ],
+        "rank": 11,
+        "importance": 0.78,
+        "reason": "Provides insights into seasonal patterns and overall business trajectory over time.",
+        "selected": true
+      },
+      {
+        "id": "customer_count",
+        "display_name": "Customer Count",
+        "required_semantic_roles": [
+          "customer_id_like"
+        ],
+        "formula": {
+          "operation": "DISTINCT_COUNT",
+          "fields": [
+            "customer_id_like"
+          ]
+        },
+        "aggregation": "COUNT",
+        "confidence": 1,
+        "generator_plugin": "customer_loyalty_plugin",
+        "explanation": "Counts unique customer identifiers.",
+        "dependencies": [],
+        "rank": 12,
+        "importance": 0.75,
+        "reason": "Represents the size of the active customer base, a key metric for market reach.",
+        "selected": true
+      },
+      {
+        "id": "regional_performance",
+        "display_name": "Regional Performance",
+        "required_semantic_roles": [
+          "location_like"
+        ],
+        "formula": {
+          "operation": "GROUP_COUNT",
+          "fields": [
+            "location_like"
+          ]
+        },
+        "aggregation": "DISTRIBUTION",
+        "confidence": 1,
+        "generator_plugin": "location_plugin",
+        "explanation": "Segments transaction volumes by locations.",
+        "dependencies": [],
+        "rank": 13,
+        "importance": 0.72,
+        "reason": "Important for optimizing localized operations, inventory, and marketing efforts in geographically-driven quick commerce.",
+        "selected": true
+      },
+      {
+        "id": "category_performance",
+        "display_name": "Category Performance",
+        "required_semantic_roles": [
+          "category_like"
+        ],
+        "formula": {
+          "operation": "GROUP_COUNT",
+          "fields": [
+            "category_like"
+          ]
+        },
+        "aggregation": "DISTRIBUTION",
+        "confidence": 1,
+        "generator_plugin": "category_plugin",
+        "explanation": "Groups transaction volumes by category headers.",
+        "dependencies": [],
+        "rank": 14,
+        "importance": 0.7,
+        "reason": "Helps identify best-selling products and categories, guiding inventory management and merchandising strategies.",
+        "selected": true
+      },
+      {
+        "id": "duration_distribution",
+        "display_name": "Order Fulfillment Time Distribution",
+        "required_semantic_roles": [
+          "duration_like"
+        ],
+        "formula": {
+          "operation": "DISTRIBUTION",
+          "fields": [
+            "duration_like"
+          ]
+        },
+        "aggregation": "DISTRIBUTION",
+        "confidence": 1,
+        "generator_plugin": "duration_plugin",
+        "explanation": "Renders transaction volumes mapped to dynamic time bins.",
+        "dependencies": [],
+        "rank": 15,
+        "importance": 0.68,
+        "reason": "Reveals variations and potential bottlenecks in service delivery times, crucial for maintaining 'quick' service.",
+        "selected": true
+      },
+      {
+        "id": "average_cost",
+        "display_name": "Average Cost per Order",
+        "required_semantic_roles": [
+          "cost_like"
+        ],
+        "formula": {
+          "operation": "AVG",
+          "fields": [
+            "cost_like"
+          ]
+        },
+        "aggregation": "AVG",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates the average operational cost value.",
+        "dependencies": [],
+        "rank": 16,
+        "importance": 0.65,
+        "reason": "Useful for unit economics and cost control per operation or delivery.",
+        "selected": true
+      },
+      {
+        "id": "cost_ratio",
+        "display_name": "Cost Ratio",
+        "required_semantic_roles": [
+          "revenue_like",
+          "cost_like"
+        ],
+        "formula": {
+          "operation": "RATIO",
+          "fields": [
+            "cost_like",
+            "revenue_like"
+          ]
+        },
+        "aggregation": "RATIO",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Measures total cost divided by total revenue.",
+        "dependencies": [
+          "total_cost",
+          "total_revenue"
+        ],
+        "rank": 17,
+        "importance": 0.62,
+        "reason": "Measures the proportion of revenue consumed by costs, indicating overall operational efficiency.",
+        "selected": true
+      },
+      {
+        "id": "top_locations",
+        "display_name": "Top Performing Locations",
+        "required_semantic_roles": [
+          "location_like"
+        ],
+        "formula": {
+          "operation": "GROUP_SORT_LIMIT",
+          "fields": [
+            "location_like"
+          ]
+        },
+        "aggregation": "DISTRIBUTION",
+        "confidence": 1,
+        "generator_plugin": "location_plugin",
+        "explanation": "Sorts and lists the highest volume locations.",
+        "dependencies": [
+          "regional_performance"
+        ],
+        "rank": 18,
+        "importance": 0.6,
+        "reason": "Identifies high-demand areas for resource allocation, expansion, and targeted marketing.",
+        "selected": true
+      },
+      {
+        "id": "category_share",
+        "display_name": "Category Revenue Share",
+        "required_semantic_roles": [
+          "category_like"
+        ],
+        "formula": {
+          "operation": "GROUP_PERCENT",
+          "fields": [
+            "category_like"
+          ]
+        },
+        "aggregation": "RATIO",
+        "confidence": 1,
+        "generator_plugin": "category_plugin",
+        "explanation": "Computes proportion percentage of total count per category label.",
+        "dependencies": [
+          "category_performance"
+        ],
+        "rank": 19,
+        "importance": 0.58,
+        "reason": "Shows the relative importance and contribution of different product categories to overall revenue.",
+        "selected": true
+      },
+      {
+        "id": "weekly_revenue",
+        "display_name": "Weekly Revenue",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "GROUP_WEEK",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "SUM",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Aggregates revenue values grouped by ISO week.",
+        "dependencies": [
+          "total_revenue"
+        ],
+        "rank": 20,
+        "importance": 0.55,
+        "reason": "Provides granular, frequent insights into revenue performance, suitable for quick operational adjustments.",
+        "selected": true
+      },
+      {
+        "id": "monthly_revenue",
+        "display_name": "Monthly Revenue",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "GROUP_MONTH",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "SUM",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Aggregates revenue values grouped by month.",
+        "dependencies": [
+          "total_revenue"
+        ],
+        "rank": 21,
+        "importance": 0.52,
+        "reason": "Standard aggregation for periodic performance review and long-term planning.",
+        "selected": true
+      },
+      {
+        "id": "rolling_revenue",
+        "display_name": "Rolling Revenue",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "ROLLING_SUM",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "TREND",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates 7-record rolling total of sales revenue.",
+        "dependencies": [
+          "total_revenue"
+        ],
+        "rank": 22,
+        "importance": 0.5,
+        "reason": "Smoothes out daily fluctuations to reveal underlying trends in revenue performance.",
+        "selected": true
+      },
+      {
+        "id": "revenue_distribution",
+        "display_name": "Revenue Distribution",
+        "required_semantic_roles": [
+          "revenue_like"
+        ],
+        "formula": {
+          "operation": "DISTRIBUTION",
+          "fields": [
+            "revenue_like"
+          ]
+        },
+        "aggregation": "DISTRIBUTION",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Renders transaction counts across dynamic revenue brackets.",
+        "dependencies": [],
+        "rank": 23,
+        "importance": 0.45,
+        "reason": "Helps understand the spread of transaction values, identifying common order sizes.",
+        "selected": true
+      },
+      {
+        "id": "revenue_per_unit",
+        "display_name": "Revenue per Unit Sold",
+        "required_semantic_roles": [
+          "revenue_like",
+          "quantity_like"
+        ],
+        "formula": {
+          "operation": "RATIO",
+          "fields": [
+            "revenue_like",
+            "quantity_like"
+          ]
+        },
+        "aggregation": "RATIO",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates revenue generated per unit sold.",
+        "dependencies": [],
+        "rank": 24,
+        "importance": 0.4,
+        "reason": "Useful for detailed product pricing and profitability analysis at the item level.",
+        "selected": true
+      },
+      {
+        "id": "average_revenue",
+        "display_name": "Average Transaction Value",
+        "required_semantic_roles": [
+          "revenue_like"
+        ],
+        "formula": {
+          "operation": "AVG",
+          "fields": [
+            "revenue_like"
+          ]
+        },
+        "aggregation": "AVG",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates the average transaction value of revenue fields.",
+        "dependencies": [],
+        "rank": 25,
+        "importance": 0.35,
+        "reason": "Provides an overall average of individual transaction values, complementing Average Order Value.",
+        "selected": true
+      },
+      {
+        "id": "headcount",
+        "display_name": "Headcount",
+        "required_semantic_roles": [
+          "employee_like"
+        ],
+        "formula": {
+          "operation": "DISTINCT_COUNT",
+          "fields": [
+            "employee_like"
+          ]
+        },
+        "aggregation": "COUNT",
+        "confidence": 1,
+        "generator_plugin": "hr_plugin",
+        "explanation": "Calculates total unique employee count.",
+        "dependencies": [],
+        "rank": 26,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "active_employees",
+        "display_name": "Active Employees",
+        "required_semantic_roles": [
+          "employee_like",
+          "status_like"
+        ],
+        "formula": {
+          "operation": "COUNT_FILTER",
+          "fields": [
+            "employee_like"
+          ],
+          "filter": {
+            "status_like": "active"
+          }
+        },
+        "aggregation": "COUNT",
+        "confidence": 1,
+        "generator_plugin": "hr_plugin",
+        "explanation": "Counts unique employees currently marked as active.",
+        "dependencies": [
+          "headcount"
+        ],
+        "rank": 27,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "attrition_rate",
+        "display_name": "Attrition Rate",
+        "required_semantic_roles": [
+          "employee_like",
+          "status_like"
+        ],
+        "formula": {
+          "operation": "RATIO_PERCENT",
+          "fields": [
+            "terminated_employees",
+            "headcount"
+          ]
+        },
+        "aggregation": "RATE",
+        "confidence": 1,
+        "generator_plugin": "hr_plugin",
+        "explanation": "Percentage of employees who left the organization.",
+        "dependencies": [
+          "headcount"
+        ],
+        "rank": 28,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      }
+    ]
+  },
+  "a91fe4697075354ce3fd36e98c6210fc6d1e41db9f4af5a12b470e9d8ab2e776": {
+    "selected_kpis": [
+      {
+        "id": "sla_compliance",
+        "display_name": "SLA Compliance (Delivery Time)",
+        "required_semantic_roles": [
+          "duration_like"
+        ],
+        "formula": {
+          "operation": "PERCENT_BELOW",
+          "fields": [
+            "duration_like"
+          ],
+          "threshold": 30
+        },
+        "aggregation": "RATE",
+        "confidence": 1,
+        "generator_plugin": "duration_plugin",
+        "explanation": "Computes proportion of transactions satisfying target SLA duration (30 mins).",
+        "dependencies": [],
+        "rank": 1,
+        "importance": 1.0,
+        "reason": "Paramount for customer satisfaction and operational excellence in quick commerce, directly measuring service reliability.",
+        "selected": true
+      },
+      {
+        "id": "total_revenue",
+        "display_name": "Total Revenue",
+        "required_semantic_roles": [
+          "revenue_like"
+        ],
+        "formula": {
+          "operation": "SUM",
+          "fields": [
+            "revenue_like"
+          ]
+        },
+        "aggregation": "SUM",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates the sum of all transaction revenue fields.",
+        "dependencies": [],
+        "rank": 2,
+        "importance": 0.98,
+        "reason": "The fundamental measure of overall business scale and financial success.",
+        "selected": true
+      },
+      {
+        "id": "average_duration",
+        "display_name": "Average Delivery Duration",
+        "required_semantic_roles": [
+          "duration_like"
+        ],
+        "formula": {
+          "operation": "AVG",
+          "fields": [
+            "duration_like"
+          ]
+        },
+        "aggregation": "AVG",
+        "confidence": 1,
+        "generator_plugin": "duration_plugin",
+        "explanation": "Measures average operation time duration.",
+        "dependencies": [],
+        "rank": 3,
+        "importance": 0.97,
+        "reason": "A critical operational metric directly impacting customer experience and competitive advantage in quick commerce.",
+        "selected": true
+      },
+      {
+        "id": "total_cost",
+        "display_name": "Total Operational Cost",
+        "required_semantic_roles": [
+          "cost_like"
+        ],
+        "formula": {
+          "operation": "SUM",
+          "fields": [
+            "cost_like"
+          ]
+        },
+        "aggregation": "SUM",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates the sum of all operational cost fields.",
+        "dependencies": [],
+        "rank": 4,
+        "importance": 0.95,
+        "reason": "Essential for understanding the overall expenses and managing profitability.",
+        "selected": true
+      },
+      {
+        "id": "gross_profit",
+        "display_name": "Gross Profit",
+        "required_semantic_roles": [
+          "revenue_like",
+          "cost_like"
+        ],
+        "formula": {
+          "operation": "SUBTRACT",
+          "fields": [
+            "revenue_like",
+            "cost_like"
+          ]
+        },
+        "aggregation": "SUM",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Derived as total revenue minus total cost.",
+        "dependencies": [
+          "total_revenue",
+          "total_cost"
+        ],
+        "rank": 5,
+        "importance": 0.93,
+        "reason": "A key indicator of the financial health and efficiency of core quick commerce operations.",
+        "selected": true
+      },
+      {
+        "id": "profit_margin",
+        "display_name": "Profit Margin",
+        "required_semantic_roles": [
+          "revenue_like",
+          "cost_like"
+        ],
+        "formula": {
+          "operation": "RATIO_PERCENT",
+          "fields": [
+            "gross_profit",
+            "revenue_like"
+          ]
+        },
+        "aggregation": "RATE",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Profit margin percentage calculated from profit and revenue.",
+        "dependencies": [
+          "gross_profit",
+          "total_revenue"
+        ],
+        "rank": 6,
+        "importance": 0.9,
+        "reason": "Measures the profitability of each dollar of revenue, crucial for sustainable growth.",
+        "selected": true
+      },
+      {
+        "id": "average_revenue",
+        "display_name": "Average Order Value (AOV)",
+        "required_semantic_roles": [
+          "revenue_like"
+        ],
+        "formula": {
+          "operation": "AVG",
+          "fields": [
+            "revenue_like"
+          ]
+        },
+        "aggregation": "AVG",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates the average transaction value of revenue fields.",
+        "dependencies": [],
+        "rank": 7,
+        "importance": 0.88,
+        "reason": "Provides insight into customer spending habits, vital for pricing and marketing strategies.",
+        "selected": true
+      },
+      {
+        "id": "revenue_trend",
+        "display_name": "Revenue Trend",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "GROUP_TREND",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "TREND",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Monitors total revenue shifts over date records.",
+        "dependencies": [
+          "total_revenue"
+        ],
+        "rank": 8,
+        "importance": 0.85,
+        "reason": "Essential for tracking sales performance over time, identifying seasonality, and forecasting future demand.",
+        "selected": true
+      },
+      {
+        "id": "repeat_customer_rate",
+        "display_name": "Repeat Customer Rate",
+        "required_semantic_roles": [
+          "customer_id_like"
+        ],
+        "formula": {
+          "operation": "RATIO_PERCENT",
+          "fields": [
+            "repeat_customers",
+            "total_customers"
+          ]
+        },
+        "aggregation": "RATE",
+        "confidence": 1,
+        "generator_plugin": "customer_loyalty_plugin",
+        "explanation": "Percentage of unique customers with multiple transaction occurrences.",
+        "dependencies": [
+          "customer_count"
+        ],
+        "rank": 9,
+        "importance": 0.83,
+        "reason": "Crucial for assessing customer loyalty and the effectiveness of retention strategies, a key driver for sustainable growth.",
+        "selected": true
+      },
+      {
+        "id": "duration_distribution",
+        "display_name": "Delivery Duration Distribution",
+        "required_semantic_roles": [
+          "duration_like"
+        ],
+        "formula": {
+          "operation": "DISTRIBUTION",
+          "fields": [
+            "duration_like"
+          ]
+        },
+        "aggregation": "DISTRIBUTION",
+        "confidence": 1,
+        "generator_plugin": "duration_plugin",
+        "explanation": "Renders transaction volumes mapped to dynamic time bins.",
+        "dependencies": [],
+        "rank": 10,
+        "importance": 0.8,
+        "reason": "Helps identify bottlenecks and variations in delivery times, essential for optimizing logistics and meeting customer expectations.",
+        "selected": true
+      },
+      {
+        "id": "customer_frequency",
+        "display_name": "Customer Order Frequency",
+        "required_semantic_roles": [
+          "customer_id_like"
+        ],
+        "formula": {
+          "operation": "AVG_COUNT",
+          "fields": [
+            "customer_id_like"
+          ]
+        },
+        "aggregation": "AVG",
+        "confidence": 1,
+        "generator_plugin": "customer_loyalty_plugin",
+        "explanation": "Measures the average number of transaction records per customer.",
+        "dependencies": [],
+        "rank": 11,
+        "importance": 0.78,
+        "reason": "Indicates how often customers make purchases, providing insights into engagement and potential for increased sales.",
+        "selected": true
+      },
+      {
+        "id": "category_performance",
+        "display_name": "Product Category Performance",
+        "required_semantic_roles": [
+          "category_like"
+        ],
+        "formula": {
+          "operation": "GROUP_COUNT",
+          "fields": [
+            "category_like"
+          ]
+        },
+        "aggregation": "DISTRIBUTION",
+        "confidence": 1,
+        "generator_plugin": "category_plugin",
+        "explanation": "Groups transaction volumes by category headers.",
+        "dependencies": [],
+        "rank": 12,
+        "importance": 0.75,
+        "reason": "Helps understand which product categories are performing best, informing inventory management and merchandising decisions.",
+        "selected": true
+      },
+      {
+        "id": "average_cost",
+        "display_name": "Average Cost per Order",
+        "required_semantic_roles": [
+          "cost_like"
+        ],
+        "formula": {
+          "operation": "AVG",
+          "fields": [
+            "cost_like"
+          ]
+        },
+        "aggregation": "AVG",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates the average operational cost value.",
+        "dependencies": [],
+        "rank": 13,
+        "importance": 0.72,
+        "reason": "Provides insight into the efficiency of operations per transaction, critical for managing margins.",
+        "selected": true
+      },
+      {
+        "id": "revenue_distribution",
+        "display_name": "Order Value Distribution",
+        "required_semantic_roles": [
+          "revenue_like"
+        ],
+        "formula": {
+          "operation": "DISTRIBUTION",
+          "fields": [
+            "revenue_like"
+          ]
+        },
+        "aggregation": "DISTRIBUTION",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Renders transaction counts across dynamic revenue brackets.",
+        "dependencies": [],
+        "rank": 14,
+        "importance": 0.7,
+        "reason": "Helps identify popular price points and potential for upselling or cross-selling within quick commerce transactions.",
+        "selected": true
+      },
+      {
+        "id": "customer_count",
+        "display_name": "Total Customers",
+        "required_semantic_roles": [
+          "customer_id_like"
+        ],
+        "formula": {
+          "operation": "DISTINCT_COUNT",
+          "fields": [
+            "customer_id_like"
+          ]
+        },
+        "aggregation": "COUNT",
+        "confidence": 1,
+        "generator_plugin": "customer_loyalty_plugin",
+        "explanation": "Counts unique customer identifiers.",
+        "dependencies": [],
+        "rank": 15,
+        "importance": 0.68,
+        "reason": "Fundamental for understanding the customer base size and market reach.",
+        "selected": true
+      },
+      {
+        "id": "regional_performance",
+        "display_name": "Regional Sales Performance",
+        "required_semantic_roles": [
+          "location_like"
+        ],
+        "formula": {
+          "operation": "GROUP_COUNT",
+          "fields": [
+            "location_like"
+          ]
+        },
+        "aggregation": "DISTRIBUTION",
+        "confidence": 1,
+        "generator_plugin": "location_plugin",
+        "explanation": "Segments transaction volumes by locations.",
+        "dependencies": [],
+        "rank": 16,
+        "importance": 0.65,
+        "reason": "Provides insights into geographical market strengths and weaknesses, guiding expansion and localized marketing efforts.",
+        "selected": true
+      },
+      {
+        "id": "top_locations",
+        "display_name": "Top Performing Locations",
+        "required_semantic_roles": [
+          "location_like"
+        ],
+        "formula": {
+          "operation": "GROUP_SORT_LIMIT",
+          "fields": [
+            "location_like"
+          ]
+        },
+        "aggregation": "DISTRIBUTION",
+        "confidence": 1,
+        "generator_plugin": "location_plugin",
+        "explanation": "Sorts and lists the highest volume locations.",
+        "dependencies": [
+          "regional_performance"
+        ],
+        "rank": 17,
+        "importance": 0.63,
+        "reason": "Identifies key areas driving sales, allowing for focused resource allocation and strategic planning.",
+        "selected": true
+      },
+      {
+        "id": "category_share",
+        "display_name": "Product Category Market Share",
+        "required_semantic_roles": [
+          "category_like"
+        ],
+        "formula": {
+          "operation": "GROUP_PERCENT",
+          "fields": [
+            "category_like"
+          ]
+        },
+        "aggregation": "RATIO",
+        "confidence": 1,
+        "generator_plugin": "category_plugin",
+        "explanation": "Computes proportion percentage of total count per category label.",
+        "dependencies": [
+          "category_performance"
+        ],
+        "rank": 18,
+        "importance": 0.6,
+        "reason": "Shows the proportional contribution of each product category to overall sales, useful for portfolio analysis.",
+        "selected": true
+      },
+      {
+        "id": "revenue_per_unit",
+        "display_name": "Revenue per Item Sold",
+        "required_semantic_roles": [
+          "revenue_like",
+          "quantity_like"
+        ],
+        "formula": {
+          "operation": "RATIO",
+          "fields": [
+            "revenue_like",
+            "quantity_like"
+          ]
+        },
+        "aggregation": "RATIO",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates revenue generated per unit sold.",
+        "dependencies": [],
+        "rank": 19,
+        "importance": 0.58,
+        "reason": "Helps assess the profitability and pricing effectiveness of individual items within quick commerce orders.",
+        "selected": true
+      },
+      {
+        "id": "cost_ratio",
+        "display_name": "Cost-to-Revenue Ratio",
+        "required_semantic_roles": [
+          "revenue_like",
+          "cost_like"
+        ],
+        "formula": {
+          "operation": "RATIO",
+          "fields": [
+            "cost_like",
+            "revenue_like"
+          ]
+        },
+        "aggregation": "RATIO",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Measures total cost divided by total revenue.",
+        "dependencies": [
+          "total_cost",
+          "total_revenue"
+        ],
+        "rank": 20,
+        "importance": 0.55,
+        "reason": "Helps monitor the proportion of revenue consumed by costs, indicating operational efficiency.",
+        "selected": true
+      },
+      {
+        "id": "revenue_growth_rate",
+        "display_name": "Revenue Growth Rate",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "PERIOD_GROWTH",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "RATE",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Computes period-over-period growth rate of revenue.",
+        "dependencies": [
+          "revenue_trend"
+        ],
+        "rank": 21,
+        "importance": 0.52,
+        "reason": "Measures the pace of business expansion, critical for evaluating strategic initiatives and market penetration.",
+        "selected": true
+      },
+      {
+        "id": "weekly_revenue",
+        "display_name": "Weekly Revenue",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "GROUP_WEEK",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "SUM",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Aggregates revenue values grouped by ISO week.",
+        "dependencies": [
+          "total_revenue"
+        ],
+        "rank": 22,
+        "importance": 0.5,
+        "reason": "Offers granular insights into short-term sales fluctuations, enabling agile operational adjustments.",
+        "selected": true
+      },
+      {
+        "id": "monthly_revenue",
+        "display_name": "Monthly Revenue",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "GROUP_MONTH",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "SUM",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Aggregates revenue values grouped by month.",
+        "dependencies": [
+          "total_revenue"
+        ],
+        "rank": 23,
+        "importance": 0.48,
+        "reason": "Provides a clear view of revenue performance on a monthly basis, useful for financial reporting and target setting.",
+        "selected": true
+      },
+      {
+        "id": "rolling_revenue",
+        "display_name": "7-Day Rolling Revenue",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "ROLLING_SUM",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "TREND",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates 7-record rolling total of sales revenue.",
+        "dependencies": [
+          "total_revenue"
+        ],
+        "rank": 24,
+        "importance": 0.45,
+        "reason": "Helps identify underlying revenue trends by smoothing out daily variations, providing a clearer picture of performance.",
+        "selected": true
+      },
+      {
+        "id": "headcount",
+        "display_name": "Total Employee Headcount",
+        "required_semantic_roles": [
+          "employee_like"
+        ],
+        "formula": {
+          "operation": "DISTINCT_COUNT",
+          "fields": [
+            "employee_like"
+          ]
+        },
+        "aggregation": "COUNT",
+        "confidence": 1,
+        "generator_plugin": "hr_plugin",
+        "explanation": "Calculates total unique employee count.",
+        "dependencies": [],
+        "rank": 25,
+        "importance": 0.4,
+        "reason": "Important for managing staffing levels, especially for delivery personnel and warehouse staff.",
+        "selected": true
+      },
+      {
+        "id": "active_employees",
+        "display_name": "Active Employees",
+        "required_semantic_roles": [
+          "employee_like",
+          "status_like"
+        ],
+        "formula": {
+          "operation": "COUNT_FILTER",
+          "fields": [
+            "employee_like"
+          ],
+          "filter": {
+            "status_like": "active"
+          }
+        },
+        "aggregation": "COUNT",
+        "confidence": 1,
+        "generator_plugin": "hr_plugin",
+        "explanation": "Counts unique employees currently marked as active.",
+        "dependencies": [
+          "headcount"
+        ],
+        "rank": 26,
+        "importance": 0.35,
+        "reason": "Monitors the available workforce for daily operations, crucial for ensuring service capacity.",
+        "selected": true
+      },
+      {
+        "id": "average_order_value",
+        "display_name": "Average Order Value",
+        "required_semantic_roles": [
+          "revenue_like",
+          "quantity_like"
+        ],
+        "formula": {
+          "operation": "RATIO",
+          "fields": [
+            "revenue_like",
+            "quantity_like"
+          ]
+        },
+        "aggregation": "RATIO",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Measures transaction value divided by purchased units.",
+        "dependencies": [],
+        "rank": 27,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      },
+      {
+        "id": "attrition_rate",
+        "display_name": "Attrition Rate",
+        "required_semantic_roles": [
+          "employee_like",
+          "status_like"
+        ],
+        "formula": {
+          "operation": "RATIO_PERCENT",
+          "fields": [
+            "terminated_employees",
+            "headcount"
+          ]
+        },
+        "aggregation": "RATE",
+        "confidence": 1,
+        "generator_plugin": "hr_plugin",
+        "explanation": "Percentage of employees who left the organization.",
+        "dependencies": [
+          "headcount"
+        ],
+        "rank": 28,
+        "importance": 0.1,
+        "reason": "Not prioritized for this business domain.",
+        "selected": false
+      }
+    ]
+  },
+  "f7691955541ed53c39385ffc6532c375ef0121c1f57e7ab52492e224260a5f53": {
+    "selected_kpis": [
+      {
+        "id": "total_revenue",
+        "display_name": "Total Revenue",
+        "required_semantic_roles": [
+          "revenue_like"
+        ],
+        "formula": {
+          "operation": "SUM",
+          "fields": [
+            "revenue_like"
+          ]
+        },
+        "aggregation": "SUM",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates the sum of all transaction revenue fields.",
+        "dependencies": [],
+        "rank": 1,
+        "importance": 1.0,
+        "reason": "Fundamental measure of overall business performance and sales volume.",
+        "selected": true
+      },
+      {
+        "id": "total_cost",
+        "display_name": "Total Cost",
+        "required_semantic_roles": [
+          "cost_like"
+        ],
+        "formula": {
+          "operation": "SUM",
+          "fields": [
+            "cost_like"
+          ]
+        },
+        "aggregation": "SUM",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates the sum of all operational cost fields.",
+        "dependencies": [],
+        "rank": 2,
+        "importance": 0.95,
+        "reason": "Essential for understanding overall expenditures and operational efficiency.",
+        "selected": true
+      },
+      {
+        "id": "gross_profit",
+        "display_name": "Gross Profit",
+        "required_semantic_roles": [
+          "revenue_like",
+          "cost_like"
+        ],
+        "formula": {
+          "operation": "SUBTRACT",
+          "fields": [
+            "revenue_like",
+            "cost_like"
+          ]
+        },
+        "aggregation": "SUM",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Derived as total revenue minus total cost.",
+        "dependencies": [
+          "total_revenue",
+          "total_cost"
+        ],
+        "rank": 3,
+        "importance": 0.92,
+        "reason": "Key indicator of profitability, showing revenue remaining after direct costs.",
+        "selected": true
+      },
+      {
+        "id": "profit_margin",
+        "display_name": "Profit Margin",
+        "required_semantic_roles": [
+          "revenue_like",
+          "cost_like"
+        ],
+        "formula": {
+          "operation": "RATIO_PERCENT",
+          "fields": [
+            "gross_profit",
+            "revenue_like"
+          ]
+        },
+        "aggregation": "RATE",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Profit margin percentage calculated from profit and revenue.",
+        "dependencies": [
+          "gross_profit",
+          "total_revenue"
+        ],
+        "rank": 4,
+        "importance": 0.9,
+        "reason": "Measures the percentage of revenue that translates into profit, indicating efficiency.",
+        "selected": true
+      },
+      {
+        "id": "revenue_growth_rate",
+        "display_name": "Revenue Growth Rate",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "PERIOD_GROWTH",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "RATE",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Computes period-over-period growth rate of revenue.",
+        "dependencies": [
+          "revenue_trend"
+        ],
+        "rank": 5,
+        "importance": 0.88,
+        "reason": "Measures the percentage increase in revenue over a specific period, indicating business expansion.",
+        "selected": true
+      },
+      {
+        "id": "average_revenue",
+        "display_name": "Average Revenue per Transaction",
+        "required_semantic_roles": [
+          "revenue_like"
+        ],
+        "formula": {
+          "operation": "AVG",
+          "fields": [
+            "revenue_like"
+          ]
+        },
+        "aggregation": "AVG",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates the average transaction value of revenue fields.",
+        "dependencies": [],
+        "rank": 6,
+        "importance": 0.85,
+        "reason": "Provides insight into the typical value of each sale or transaction.",
+        "selected": true
+      },
+      {
+        "id": "average_order_value",
+        "display_name": "Average Order Value",
+        "required_semantic_roles": [
+          "revenue_like",
+          "quantity_like"
+        ],
+        "formula": {
+          "operation": "RATIO",
+          "fields": [
+            "revenue_like",
+            "quantity_like"
+          ]
+        },
+        "aggregation": "RATIO",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Measures transaction value divided by purchased units.",
+        "dependencies": [],
+        "rank": 7,
+        "importance": 0.83,
+        "reason": "Crucial for understanding customer spending habits and optimizing sales strategies.",
+        "selected": true
+      },
+      {
+        "id": "revenue_trend",
+        "display_name": "Revenue Trend",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "GROUP_TREND",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "TREND",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Monitors total revenue shifts over date records.",
+        "dependencies": [
+          "total_revenue"
+        ],
+        "rank": 8,
+        "importance": 0.8,
+        "reason": "Essential for identifying patterns, seasonality, and overall growth or decline in revenue over time.",
+        "selected": true
+      },
+      {
+        "id": "cost_ratio",
+        "display_name": "Cost-to-Revenue Ratio",
+        "required_semantic_roles": [
+          "revenue_like",
+          "cost_like"
+        ],
+        "formula": {
+          "operation": "RATIO",
+          "fields": [
+            "cost_like",
+            "revenue_like"
+          ]
+        },
+        "aggregation": "RATIO",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Measures total cost divided by total revenue.",
+        "dependencies": [
+          "total_cost",
+          "total_revenue"
+        ],
+        "rank": 9,
+        "importance": 0.78,
+        "reason": "Indicates how much cost is incurred for every dollar of revenue generated.",
+        "selected": true
+      },
+      {
+        "id": "revenue_per_unit",
+        "display_name": "Revenue per Unit Sold",
+        "required_semantic_roles": [
+          "revenue_like",
+          "quantity_like"
+        ],
+        "formula": {
+          "operation": "RATIO",
+          "fields": [
+            "revenue_like",
+            "quantity_like"
+          ]
+        },
+        "aggregation": "RATIO",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates revenue generated per unit sold.",
+        "dependencies": [],
+        "rank": 10,
+        "importance": 0.75,
+        "reason": "Helps assess the profitability and pricing effectiveness of individual units.",
+        "selected": true
+      },
+      {
+        "id": "customer_count",
+        "display_name": "Total Customer Count",
+        "required_semantic_roles": [
+          "customer_id_like"
+        ],
+        "formula": {
+          "operation": "DISTINCT_COUNT",
+          "fields": [
+            "customer_id_like"
+          ]
+        },
+        "aggregation": "COUNT",
+        "confidence": 1,
+        "generator_plugin": "customer_loyalty_plugin",
+        "explanation": "Counts unique customer identifiers.",
+        "dependencies": [],
+        "rank": 11,
+        "importance": 0.72,
+        "reason": "Fundamental metric for understanding the size of the customer base.",
+        "selected": true
+      },
+      {
+        "id": "repeat_customer_rate",
+        "display_name": "Repeat Customer Rate",
+        "required_semantic_roles": [
+          "customer_id_like"
+        ],
+        "formula": {
+          "operation": "RATIO_PERCENT",
+          "fields": [
+            "repeat_customers",
+            "total_customers"
+          ]
+        },
+        "aggregation": "RATE",
+        "confidence": 1,
+        "generator_plugin": "customer_loyalty_plugin",
+        "explanation": "Percentage of unique customers with multiple transaction occurrences.",
+        "dependencies": [
+          "customer_count"
+        ],
+        "rank": 12,
+        "importance": 0.7,
+        "reason": "Indicates customer loyalty and the effectiveness of retention strategies.",
+        "selected": true
+      },
+      {
+        "id": "monthly_revenue",
+        "display_name": "Monthly Revenue",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "GROUP_MONTH",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "SUM",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Aggregates revenue values grouped by month.",
+        "dependencies": [
+          "total_revenue"
+        ],
+        "rank": 13,
+        "importance": 0.68,
+        "reason": "Provides a clear view of revenue performance on a monthly basis, useful for budgeting and forecasting.",
+        "selected": true
+      },
+      {
+        "id": "category_performance",
+        "display_name": "Category Performance",
+        "required_semantic_roles": [
+          "category_like"
+        ],
+        "formula": {
+          "operation": "GROUP_COUNT",
+          "fields": [
+            "category_like"
+          ]
+        },
+        "aggregation": "DISTRIBUTION",
+        "confidence": 1,
+        "generator_plugin": "category_plugin",
+        "explanation": "Groups transaction volumes by category headers.",
+        "dependencies": [],
+        "rank": 14,
+        "importance": 0.65,
+        "reason": "Provides insights into the sales or volume contribution of different product/service categories.",
+        "selected": true
+      },
+      {
+        "id": "category_share",
+        "display_name": "Category Market Share",
+        "required_semantic_roles": [
+          "category_like"
+        ],
+        "formula": {
+          "operation": "GROUP_PERCENT",
+          "fields": [
+            "category_like"
+          ]
+        },
+        "aggregation": "RATIO",
+        "confidence": 1,
+        "generator_plugin": "category_plugin",
+        "explanation": "Computes proportion percentage of total count per category label.",
+        "dependencies": [
+          "category_performance"
+        ],
+        "rank": 15,
+        "importance": 0.63,
+        "reason": "Measures the proportional contribution of each category to the overall business.",
+        "selected": true
+      },
+      {
+        "id": "regional_performance",
+        "display_name": "Regional Performance",
+        "required_semantic_roles": [
+          "location_like"
+        ],
+        "formula": {
+          "operation": "GROUP_COUNT",
+          "fields": [
+            "location_like"
+          ]
+        },
+        "aggregation": "DISTRIBUTION",
+        "confidence": 1,
+        "generator_plugin": "location_plugin",
+        "explanation": "Segments transaction volumes by locations.",
+        "dependencies": [],
+        "rank": 16,
+        "importance": 0.6,
+        "reason": "Helps identify geographical strengths and weaknesses in business operations.",
+        "selected": true
+      },
+      {
+        "id": "top_locations",
+        "display_name": "Top Performing Locations",
+        "required_semantic_roles": [
+          "location_like"
+        ],
+        "formula": {
+          "operation": "GROUP_SORT_LIMIT",
+          "fields": [
+            "location_like"
+          ]
+        },
+        "aggregation": "DISTRIBUTION",
+        "confidence": 1,
+        "generator_plugin": "location_plugin",
+        "explanation": "Sorts and lists the highest volume locations.",
+        "dependencies": [
+          "regional_performance"
+        ],
+        "rank": 17,
+        "importance": 0.58,
+        "reason": "Highlights key geographical areas contributing most to business volume.",
+        "selected": true
+      },
+      {
+        "id": "headcount",
+        "display_name": "Employee Headcount",
+        "required_semantic_roles": [
+          "employee_like"
+        ],
+        "formula": {
+          "operation": "DISTINCT_COUNT",
+          "fields": [
+            "employee_like"
+          ]
+        },
+        "aggregation": "COUNT",
+        "confidence": 1,
+        "generator_plugin": "hr_plugin",
+        "explanation": "Calculates total unique employee count.",
+        "dependencies": [],
+        "rank": 18,
+        "importance": 0.55,
+        "reason": "Tracks the total number of employees, important for human resource planning.",
+        "selected": true
+      },
+      {
+        "id": "active_employees",
+        "display_name": "Active Employee Count",
+        "required_semantic_roles": [
+          "employee_like",
+          "status_like"
+        ],
+        "formula": {
+          "operation": "COUNT_FILTER",
+          "fields": [
+            "employee_like"
+          ],
+          "filter": {
+            "status_like": "active"
+          }
+        },
+        "aggregation": "COUNT",
+        "confidence": 1,
+        "generator_plugin": "hr_plugin",
+        "explanation": "Counts unique employees currently marked as active.",
+        "dependencies": [
+          "headcount"
+        ],
+        "rank": 19,
+        "importance": 0.53,
+        "reason": "Provides insight into the current operational workforce.",
+        "selected": true
+      },
+      {
+        "id": "attrition_rate",
+        "display_name": "Employee Attrition Rate",
+        "required_semantic_roles": [
+          "employee_like",
+          "status_like"
+        ],
+        "formula": {
+          "operation": "RATIO_PERCENT",
+          "fields": [
+            "terminated_employees",
+            "headcount"
+          ]
+        },
+        "aggregation": "RATE",
+        "confidence": 1,
+        "generator_plugin": "hr_plugin",
+        "explanation": "Percentage of employees who left the organization.",
+        "dependencies": [
+          "headcount"
+        ],
+        "rank": 20,
+        "importance": 0.5,
+        "reason": "Measures the rate at which employees leave the organization, indicating workforce stability.",
+        "selected": true
+      },
+      {
+        "id": "customer_frequency",
+        "display_name": "Customer Purchase Frequency",
+        "required_semantic_roles": [
+          "customer_id_like"
+        ],
+        "formula": {
+          "operation": "AVG_COUNT",
+          "fields": [
+            "customer_id_like"
+          ]
+        },
+        "aggregation": "AVG",
+        "confidence": 1,
+        "generator_plugin": "customer_loyalty_plugin",
+        "explanation": "Measures the average number of transaction records per customer.",
+        "dependencies": [],
+        "rank": 21,
+        "importance": 0.48,
+        "reason": "Measures how often customers engage with the business, crucial for engagement strategies.",
+        "selected": true
+      },
+      {
+        "id": "average_cost",
+        "display_name": "Average Cost",
+        "required_semantic_roles": [
+          "cost_like"
+        ],
+        "formula": {
+          "operation": "AVG",
+          "fields": [
+            "cost_like"
+          ]
+        },
+        "aggregation": "AVG",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates the average operational cost value.",
+        "dependencies": [],
+        "rank": 22,
+        "importance": 0.45,
+        "reason": "Provides insight into the typical cost associated with operations or products.",
+        "selected": true
+      },
+      {
+        "id": "weekly_revenue",
+        "display_name": "Weekly Revenue",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "GROUP_WEEK",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "SUM",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Aggregates revenue values grouped by ISO week.",
+        "dependencies": [
+          "total_revenue"
+        ],
+        "rank": 23,
+        "importance": 0.42,
+        "reason": "Offers granular insights into short-term revenue fluctuations and operational impacts.",
+        "selected": true
+      },
+      {
+        "id": "rolling_revenue",
+        "display_name": "Rolling Revenue",
+        "required_semantic_roles": [
+          "revenue_like",
+          "date_like"
+        ],
+        "formula": {
+          "operation": "ROLLING_SUM",
+          "fields": [
+            "revenue_like",
+            "date_like"
+          ]
+        },
+        "aggregation": "TREND",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Calculates 7-record rolling total of sales revenue.",
+        "dependencies": [
+          "total_revenue"
+        ],
+        "rank": 24,
+        "importance": 0.4,
+        "reason": "Helps identify underlying revenue trends by smoothing out daily or weekly volatility.",
+        "selected": true
+      },
+      {
+        "id": "average_duration",
+        "display_name": "Average Operation Duration",
+        "required_semantic_roles": [
+          "duration_like"
+        ],
+        "formula": {
+          "operation": "AVG",
+          "fields": [
+            "duration_like"
+          ]
+        },
+        "aggregation": "AVG",
+        "confidence": 1,
+        "generator_plugin": "duration_plugin",
+        "explanation": "Measures average operation time duration.",
+        "dependencies": [],
+        "rank": 25,
+        "importance": 0.38,
+        "reason": "Helps in understanding the typical time taken for a specific process or task.",
+        "selected": true
+      },
+      {
+        "id": "sla_compliance",
+        "display_name": "SLA Compliance Rate",
+        "required_semantic_roles": [
+          "duration_like"
+        ],
+        "formula": {
+          "operation": "PERCENT_BELOW",
+          "fields": [
+            "duration_like"
+          ],
+          "threshold": 30
+        },
+        "aggregation": "RATE",
+        "confidence": 1,
+        "generator_plugin": "duration_plugin",
+        "explanation": "Computes proportion of transactions satisfying target SLA duration (30 mins).",
+        "dependencies": [],
+        "rank": 26,
+        "importance": 0.35,
+        "reason": "Critical for assessing service quality and adherence to agreed-upon service levels.",
+        "selected": true
+      },
+      {
+        "id": "revenue_distribution",
+        "display_name": "Revenue Distribution",
+        "required_semantic_roles": [
+          "revenue_like"
+        ],
+        "formula": {
+          "operation": "DISTRIBUTION",
+          "fields": [
+            "revenue_like"
+          ]
+        },
+        "aggregation": "DISTRIBUTION",
+        "confidence": 1,
+        "generator_plugin": "revenue_cost_plugin",
+        "explanation": "Renders transaction counts across dynamic revenue brackets.",
+        "dependencies": [],
+        "rank": 27,
+        "importance": 0.32,
+        "reason": "Helps identify common revenue brackets and potential pricing opportunities or issues.",
+        "selected": true
+      },
+      {
+        "id": "duration_distribution",
+        "display_name": "Operation Duration Distribution",
+        "required_semantic_roles": [
+          "duration_like"
+        ],
+        "formula": {
+          "operation": "DISTRIBUTION",
+          "fields": [
+            "duration_like"
+          ]
+        },
+        "aggregation": "DISTRIBUTION",
+        "confidence": 1,
+        "generator_plugin": "duration_plugin",
+        "explanation": "Renders transaction volumes mapped to dynamic time bins.",
+        "dependencies": [],
+        "rank": 28,
+        "importance": 0.3,
+        "reason": "Provides insights into the variability and common ranges of operation times.",
+        "selected": true
+      }
+    ]
+  }
+}

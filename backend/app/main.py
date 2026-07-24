@@ -18,12 +18,14 @@ if not os.getenv("GEMINI_API_KEY"):
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routes.upload import router as upload_router
-from app.routes.cleaning import router as cleaning_router
-from app.routes.engineering import router as engineering_router
-from app.routes.kpis import router as kpis_router
 from app.routes.insights import router as insights_router
 from app.routes.analysis import router as analysis_router
 from app.routes.report import router as report_router
+from app.routes.semantic import router as semantic_router
+from app.routes.processing import router as processing_router
+from app.routes.kpi import router as kpi_router
+from app.routes.visualization import router as visualization_router
+from app.routes.evaluation import router as evaluation_router
 
 app = FastAPI(
     title="Quick Commerce Analyst API",
@@ -62,12 +64,14 @@ app.add_middleware(
 
 # Register routes
 app.include_router(upload_router, prefix="/api", tags=["ingestion"])
-app.include_router(cleaning_router, prefix="/api", tags=["cleaning"])
-app.include_router(engineering_router, prefix="/api", tags=["engineering"])
-app.include_router(kpis_router, prefix="/api", tags=["kpis"])
 app.include_router(insights_router, prefix="/api", tags=["insights"])
 app.include_router(analysis_router, prefix="/api", tags=["analysis"])
 app.include_router(report_router, prefix="/api", tags=["report"])
+app.include_router(semantic_router, prefix="/api", tags=["semantic"])
+app.include_router(processing_router, prefix="/api", tags=["processing"])
+app.include_router(kpi_router, prefix="/api", tags=["kpi"])
+app.include_router(visualization_router, prefix="/api", tags=["visualization"])
+app.include_router(evaluation_router, prefix="/api", tags=["evaluation"])
 
 @app.get("/health")
 def health_check():

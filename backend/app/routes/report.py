@@ -1,23 +1,37 @@
+import io
+import logging
+from typing import Dict, Any
 from fastapi import APIRouter, HTTPException, status
 from fastapi.responses import StreamingResponse
-import io
+from pydantic import BaseModel
 from app.services.data_ingestion import sessions
-from app.services.data_cleaning import clean_dataset
-from app.services.feature_engineering import engineer_features
-from app.services.kpi_engine import calculate_kpis
-from app.services.insight_generator import generate_insights, insights_cache
-from app.services.report_generator import generate_pdf_report
+from app.services.orchestrator import PipelineOrchestrator
+from app.services.dataset_profiler.parser import BaseParser
+from app.services.dataset_profiler.profiler import profile_dataset
+from app.services.semantic_mapper import map_semantics
+from app.services.kpi_generator.generator import generate_candidate_kpis
+from app.services.kpi_ranking import rank_candidate_kpis
+from app.services.insight_generator.generator import generate_narrative_insights
+from app.services.report_generator.exporter import HTMLReportExporter, PDFReportExporter
 
 router = APIRouter()
+logger = logging.getLogger("dataset_profiler")
+
+class InsightsRequest(BaseModel):
+    pipeline_result: Dict[str, Any]
+
+class ExportRequest(BaseModel):
+    pipeline_result: Dict[str, Any]
+    insights: Dict[str, Any]
+    format: str = "html"  # "html" or "pdf"
+
 
 @router.get("/report/{session_id}")
 def download_session_report(session_id: str):
     """
     Generates a professional corporate analytics report for the given session_id.
-    Runs any missing pipeline preprocessing, executes AI consulting analysis,
-    and returns a downloadable file (PDF, or HTML fallback).
+    Runs the modern schema-agnostic pipeline and returns a downloadable PDF report.
     """
-    # 1. Retrieve the session DataFrame
     if session_id not in sessions:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -25,57 +39,105 @@ def download_session_report(session_id: str):
         )
         
     df = sessions[session_id]
+    logger.info(f"Report Route: Compiling PDF report via modern pipeline for session '{session_id}'")
     
     try:
-        # 2. Check if clean/engineer pipelines have been executed
-        is_cleaned = 'is_outlier' in df.columns
-        is_engineered = 'is_delayed' in df.columns
+        # Step 1: Profile & Map
+        class PreparsedParser(BaseParser):
+            def __init__(self, parsed_df):
+                self.parsed_df = parsed_df
+            def parse(self):
+                return self.parsed_df
+                
+        profile = profile_dataset(PreparsedParser(df))
+        mapping = map_semantics(profile)
         
-        if not is_cleaned:
-            df, _ = clean_dataset(df)
-            sessions[session_id] = df
-            
-        if not is_engineered:
-            df, _ = engineer_features(df)
-            sessions[session_id] = df
-            
-        # 3. Calculate KPIs
-        kpis = calculate_kpis(df)
+        # Step 2: Post-process (Domain Classification & Feature Engineering)
+        domain_profile, metadata, engineered_df = PipelineOrchestrator.post_process_features(df, mapping, profile)
+        sessions[session_id] = engineered_df
         
-        # 4. Fetch or generate AI insights
-        if session_id in insights_cache:
-            insights = insights_cache[session_id]
-        else:
-            insights = generate_insights(kpis)
-            insights_cache[session_id] = insights
-            
-        # 5. Compile report bytes and content type
-        report_bytes, content_type = generate_pdf_report(kpis, insights)
+        # Step 3: Context & KPIs
+        context = PipelineOrchestrator.build_context(profile, mapping, domain_profile, metadata)
+        candidates = generate_candidate_kpis(context)
+        ranked = rank_candidate_kpis(context, candidates)
         
-        # 6. Set appropriate file attachment headers based on file type
-        extension = "pdf" if content_type == "application/pdf" else "html"
-        filename = f"diagnostic_report_{session_id[:8]}.{extension}"
+        # Step 4: Insights
+        pipeline_result = {
+            "dataset_profile": profile,
+            "confirmed_semantic_mapping": mapping,
+            "domain_profile": domain_profile,
+            "engineered_features": metadata,
+            "selected_kpis": ranked
+        }
+        insights_res = generate_narrative_insights(pipeline_result)
+        insights = insights_res.get("insights", {})
         
-        # 7. Write to BytesIO buffer and rewind
+        # Step 5: Export to PDF
+        exporter = PDFReportExporter()
+        report_bytes = exporter.export(pipeline_result, insights)
+        
         buffer = io.BytesIO(report_bytes)
         buffer.seek(0)
         
-        # 8. Log validation checks
-        pdf_size = len(report_bytes)
-        first_bytes_preview = report_bytes[:15]
-        print(f"[REPORT DOWNLOAD LOG] Session: {session_id}")
-        print(f"[REPORT DOWNLOAD LOG] Response Content-Type: {content_type}")
-        print(f"[REPORT DOWNLOAD LOG] Generated Report Size: {pdf_size} bytes")
-        print(f"[REPORT DOWNLOAD LOG] First few bytes: {first_bytes_preview}")
-        
+        filename = f"operations_insights_report_{session_id[:8]}.pdf"
         headers = {
             "Content-Disposition": f'attachment; filename="{filename}"'
         }
         
-        return StreamingResponse(buffer, media_type=content_type, headers=headers)
+        return StreamingResponse(buffer, media_type="application/pdf", headers=headers)
         
     except Exception as e:
+        logger.error(f"Error compiling session report: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Error occurred during report compiling: {str(e)}"
+        )
+
+
+@router.post("/report/insights")
+def get_report_insights(request: InsightsRequest):
+    """
+    Computes deterministic insights and leverages Gemini to produce
+    domain-grounded, validated narrative interpretations and suggestions.
+    """
+    try:
+        res = generate_narrative_insights(request.pipeline_result)
+        return res
+    except Exception as e:
+        logger.error(f"Error generating narrative report insights: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e)
+        )
+
+
+@router.post("/report/export")
+def export_report_file(request: ExportRequest):
+    """
+    Exports a domain-adaptive PDF or HTML report based on the provided pipeline
+    result context and narrative insights.
+    """
+    try:
+        if request.format == "pdf":
+            exporter = PDFReportExporter()
+            media_type = "application/pdf"
+            filename = "operations_insights_report.pdf"
+        else:
+            exporter = HTMLReportExporter()
+            media_type = "text/html"
+            filename = "operations_insights_report.html"
+            
+        report_bytes = exporter.export(request.pipeline_result, request.insights)
+        buffer = io.BytesIO(report_bytes)
+        buffer.seek(0)
+        
+        headers = {
+            "Content-Disposition": f'attachment; filename="{filename}"'
+        }
+        return StreamingResponse(buffer, media_type=media_type, headers=headers)
+    except Exception as e:
+        logger.error(f"Error exporting report: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e)
         )
